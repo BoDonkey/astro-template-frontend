@@ -1,0 +1,35 @@
+@use "../theme-base";
+
+// Traditional Theme
+$primary: hsl(171, 80%, 45%); // Softer teal
+$info: hsl(198, 85%, 65%);    // Balanced blue
+$link: hsl(233, 80%, 58%);    // Calmer indigo
+$success: hsl(153, 50%, 50%); // Muted green
+$warning: hsl(42, 90%, 50%);  // Balanced yellow
+$danger: hsl(348, 85%, 65%);  // Softer red
+
+
+$custom-colors: (
+  "primary": $primary,
+  "info": $info,
+  "link": $link,
+  "success": $success,
+  "warning": $warning,
+  "danger": $danger,
+  "text": #363636,
+  "text-strong": #363636,
+  "text-light": #4a4a4a,
+  "grey": #777777
+) !default;
+
+@mixin traditional-theme-light {
+  --family-primary: 'Libre Baskerville', serif;
+  --family-secondary: 'Source Sans Pro', sans-serif;
+  @include theme-base.theme-base("traditional", $custom-colors, false);
+}
+
+@mixin traditional-theme-dark {
+  --family-primary: 'Libre Baskerville', serif;
+  --family-secondary: 'Source Sans Pro', sans-serif;
+  @include theme-base.theme-base("traditional", $custom-colors, true);
+}

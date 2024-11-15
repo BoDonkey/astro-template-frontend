@@ -1,0 +1,32 @@
+@use "sass:list";
+@use "bulma/sass/utilities/css-variables" as cv;
+@use "bulma/sass/utilities/derived-variables" as dv;
+@use "bulma/sass/utilities/initial-variables" as iv;
+@use "bulma/sass/utilities/functions" as fn;
+@use "bulma/sass/themes/light";
+@use "bulma/sass/themes/dark";
+
+// This mixin combines theme variables with custom colors
+@mixin theme-base($theme-name, $custom-colors, $is-dark: false) {
+  
+  // Declare scheme-main at the mixin scope level
+  $derived-scheme-main: if($is-dark, dark.$scheme-main, light.$scheme-main);
+  $derived-scheme-main-l: if($is-dark, dark.$scheme-main-l, light.$scheme-main-l);
+  @debug "scheme-main: #{$derived-scheme-main}, #{$is-dark}";
+  @if $is-dark {
+    @include dark.dark-theme;
+  } @else {
+    @include light.light-theme;
+  }
+
+  // Override colors using custom colors with palettes
+  @each $name, $color in $custom-colors {
+    @include cv.register-hsl($name, $color);
+    @include cv.generate-color-palette(
+      $name,
+      $color,
+      $derived-scheme-main-l,
+    );
+    @include cv.generate-on-scheme-colors($name, $color, $derived-scheme-main);
+  }
+};

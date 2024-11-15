@@ -1,0 +1,36 @@
+@use "../theme-base";
+
+// Earthy & Demure Theme
+$primary: hsl(171, 40%, 40%);  // Muted teal
+$info: hsl(198, 50%, 60%);     // Soft blue-gray
+$link: hsl(233, 40%, 45%);     // Subdued indigo
+$success: hsl(153, 35%, 45%);  // Earthy green
+$warning: hsl(42, 60%, 40%);   // Muted goldenrod
+$danger: hsl(348, 50%, 60%);   // Soft dusty rose
+
+
+// Main theme colors map - these are the colors that will actually be used
+$custom-colors: (
+  "primary": $primary,
+  "info": $info,
+  "link": $link,
+  "success": $success,
+  "warning": $warning,
+  "danger": $danger,
+  "text": #4A4643,
+  "text-strong": #3D3A38,
+  "text-light": #6B6561
+) !default;
+
+
+@mixin demure-theme-light {
+  --family-primary: 'Bitter', serif;
+  --family-secondary: 'Commissioner', sans-serif;
+  @include theme-base.theme-base("demure", $custom-colors, false);
+}
+
+@mixin demure-theme-dark {
+  --family-primary: 'Bitter', serif;
+  --family-secondary: 'Commissioner', sans-serif;
+  @include theme-base.theme-base("demure", $custom-colors, true);
+}

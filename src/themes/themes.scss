@@ -1,0 +1,42 @@
+@use "bulma/sass/utilities/css-variables" as cv;
+@use "../themes/default/variables" as default-theme;
+@use "../themes/bold/variables" as bold-theme;
+@use "../themes/traditional/variables" as traditional-theme;
+@use "../themes/demure/variables" as demure-theme;
+@use "bulma/sass/themes/setup" as setup;
+
+// Light variant
+@include cv.bulma-theme($name: "default-light") {
+  @include default-theme.default-theme-light;
+  @include setup.setup-theme;
+}
+@include cv.bulma-theme($name: "bold-light") {
+  @include bold-theme.bold-theme-light;
+  @include setup.setup-theme;
+}
+@include cv.bulma-theme($name: "traditional-light") {
+  @include traditional-theme.traditional-theme-light;
+  @include setup.setup-theme;
+}
+@include cv.bulma-theme($name: "demure-light") {
+  @include demure-theme.demure-theme-light;
+  @include setup.setup-theme;
+}
+
+// Dark variant
+@include cv.bulma-theme($name: "default-dark") {
+  @include default-theme.default-theme-dark;
+  @include setup.setup-theme;
+}
+@include cv.bulma-theme($name: "bold-dark") {
+  @include bold-theme.bold-theme-dark;
+  @include setup.setup-theme;
+}
+@include cv.bulma-theme($name: "traditional-dark") {
+  @include traditional-theme.traditional-theme-dark;
+  @include setup.setup-theme;
+}
+@include cv.bulma-theme($name: "demure-dark") {
+  @include demure-theme.demure-theme-dark;
+  @include setup.setup-theme;
+}

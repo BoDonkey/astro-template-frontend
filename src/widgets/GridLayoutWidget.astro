@@ -1,0 +1,282 @@
+---
+const { widget } = Astro.props;
+const widgetId = widget._id;
+import AposArea from '@apostrophecms/apostrophe-astro/components/AposArea.astro';
+
+// Helper to get content areas based on layout type
+const getLayoutAreas = (widget) => {
+  switch (widget.layoutType) {
+    case 'asideMainThree':
+      return [
+        {
+          name: 'aside',
+          content: widget.asideContent,
+          colStart: 1,
+          colSpan: 4,
+          rowStart: 1,
+          rowSpan: 3
+        },
+        {
+          name: 'main',
+          content: widget.mainContent,
+          colStart: 5,
+          colSpan: 8,
+          rowStart: 1,
+          rowSpan: 3
+        }
+      ];
+    case 'mainAsideThree':
+      return [
+        {
+          name: 'main',
+          content: widget.mainContent,
+          colStart: 1,
+          colSpan: 8,
+          rowStart: 1,
+          rowSpan: 3
+        },
+        {
+          name: 'aside',
+          content: widget.asideContent,
+          colStart: 9,
+          colSpan: 4,
+          rowStart: 1,
+          rowSpan: 3
+        }
+      ];
+    case 'asideTwoMain':
+      return [
+        {
+          name: 'aside',
+          content: widget.asideLongContent,
+          colStart: 1,
+          colSpan: 4,
+          rowStart: 1,
+          rowSpan: 4
+        },
+        {
+          name: 'main-top',
+          content: widget.mainTopContent,
+          colStart: 5,
+          colSpan: 8,
+          rowStart: 1,
+          rowSpan: 2
+        },
+        {
+          name: 'main-bottom',
+          content: widget.mainBottomContent,
+          colStart: 5,
+          colSpan: 8,
+          rowStart: 3,
+          rowSpan: 2
+        }
+      ];
+    case 'twoMainAside':
+      return [
+        {
+          name: 'main-top',
+          content: widget.mainTopContent,
+          colStart: 1,
+          colSpan: 8,
+          rowStart: 1,
+          rowSpan: 2
+        },
+        {
+          name: 'main-bottom',
+          content: widget.mainBottomContent,
+          colStart: 1,
+          colSpan: 8,
+          rowStart: 3,
+          rowSpan: 2
+        },
+        {
+          name: 'aside',
+          content: widget.asideLongContent,
+          colStart: 9,
+          colSpan: 4,
+          rowStart: 1,
+          rowSpan: 4
+        }
+      ];
+    case 'headerTwoColFooter':
+      return [
+        {
+          name: 'header',
+          content: widget.headerContent,
+          colStart: 1,
+          colSpan: 12,
+          rowStart: 1,
+          rowSpan: 1
+        },
+        {
+          name: 'left',
+          content: widget.leftColumnContent,
+          colStart: 1,
+          colSpan: 6,
+          rowStart: 2,
+          rowSpan: 1
+        },
+        {
+          name: 'right',
+          content: widget.rightColumnContent,
+          colStart: 7,
+          colSpan: 6,
+          rowStart: 2,
+          rowSpan: 1
+        },
+        {
+          name: 'footer',
+          content: widget.footerContent,
+          colStart: 1,
+          colSpan: 12,
+          rowStart: 3,
+          rowSpan: 1
+        }
+      ];
+    case 'featuredThreeGrid':
+      return [
+        {
+          name: 'featured',
+          content: widget.featuredContent,
+          colStart: 1,
+          colSpan: 12,
+          rowStart: 1,
+          rowSpan: 1
+        },
+        {
+          name: 'col1',
+          content: widget.columnOneContent,
+          colStart: 1,
+          colSpan: 4,
+          rowStart: 2,
+          rowSpan: 1
+        },
+        {
+          name: 'col2',
+          content: widget.columnTwoContent,
+          colStart: 5,
+          colSpan: 4,
+          rowStart: 2,
+          rowSpan: 1
+        },
+        {
+          name: 'col3',
+          content: widget.columnThreeContent,
+          colStart: 9,
+          colSpan: 4,
+          rowStart: 2,
+          rowSpan: 1
+        }
+      ];
+    case 'custom':
+    default:
+      return widget.customGrid.contentAreas;
+  }
+};
+
+// Get layout configuration
+const getLayoutConfig = (widget) => {
+  const presetConfigs = {
+    asideMainThree: { rows: 3, columns: 12, gap: '1rem' },
+    mainAsideThree: { rows: 3, columns: 12, gap: '1rem' },
+    asideTwoMain: { rows: 4, columns: 12, gap: '1rem' },
+    twoMainAside: { rows: 4, columns: 12, gap: '1rem' },
+    headerTwoColFooter: { rows: 3, columns: 12, gap: '1rem' },
+    featuredThreeGrid: { rows: 2, columns: 12, gap: '1rem' }
+  };
+
+  return widget.layoutType === 'custom'
+    ? {
+        rows: widget.customGrid.rows,
+        columns: widget.customGrid.columns,
+        gap: widget.customGrid.gap,
+        padding: widget.customGrid.padding,
+        margin: widget.customGrid.margin
+      }
+    : {
+        ...presetConfigs[widget.layoutType],
+        padding: '1rem',
+        margin: 'auto'
+      };
+};
+
+const config = getLayoutConfig(widget);
+const areas = getLayoutAreas(widget);
+const maxWidth = widget.maxWidth ? widget.maxWidth : '';
+
+const layoutClasses = [
+  'custom-layout-widget',
+  `custom-layout-widget-${widgetId}`,
+  `${widget.overrideClass || ''}`,
+  maxWidth
+].filter(Boolean).join(' ');
+
+// Generate area styles
+const areaStyles = `
+  <style>
+    ${areas
+      .map(
+        (area) => `
+      .custom-layout-widget-${widgetId} .area-${area.name} {
+        grid-column: ${area.colStart} / span ${area.colSpan};
+        grid-row: ${area.rowStart} / span ${area.rowSpan};
+      }
+    `
+      )
+      .join('\n')}
+  </style>
+`;
+---
+
+<div class='container is-fluid mb-3'>
+  <div
+    id={`custom-layout-widget-${widgetId}`}
+    class={layoutClasses}
+    data-widget-id={widgetId}
+  >
+    {
+      areas.map((area) => (
+        <div class={`custom-layout-area area-${area.name}`}>
+          <AposArea area={area.content} />
+        </div>
+      ))
+    }
+    <Fragment set:html={areaStyles} />
+  </div>
+</div>
+
+<style
+  define:vars={{
+    columns: config.columns,
+    rows: config.rows,
+    gap: config.gap,
+    padding: config.padding,
+    margin: config.margin
+  }}
+>
+  .custom-layout-widget {
+    display: grid;
+    grid-template-columns: repeat(var(--columns), 1fr);
+    grid-template-rows: repeat(var(--rows), auto);
+    gap: var(--gap);
+    padding: var(--padding);
+    margin: var(--margin, auto);
+    height: auto;
+    place-items: start stretch;
+  }
+
+  .max-width-768 { max-width: 768px; }
+  .max-width-960 { max-width: 960px; }
+  .max-width-1152 { max-width: 1152px; }
+  .max-width-1344 { max-width: 1344px; }
+
+  @media (max-width: 768px) {
+    .custom-layout-widget {
+      grid-template-columns: 1fr;
+    }
+
+    .custom-layout-widget [class^='area-'] {
+      grid-column: 1;
+    }
+  }
+</style>
