@@ -1,34 +1,20 @@
-@use "../theme-base";
+@use "../theme-engine";
 
-// Bold & Modernist Theme
-$primary: hsl(171, 100%, 36%); // Richer teal
-$info: hsl(198, 100%, 60%);    // Brighter blue
-$link: hsl(233, 100%, 55%);    // Vivid indigo
-$success: hsl(153, 65%, 47%);  // Brighter green
-$warning: hsl(42, 100%, 55%);  // Bright golden yellow
-$danger: hsl(348, 100%, 65%);  // Bright pinkish-red
-
-
-$custom-colors: (
-  "primary": $primary,
-  "info": $info,
-  "link": $link,
-  "success": $success,
-  "warning": $warning,
-  "danger": $danger,
-  "text": #1A1A2E,
-  "text-strong": #0e0e17,
-  "text-light": #4A4A5A
-) !default;
-
-@mixin bold-theme-light {
-  --family-primary: 'Space Grotesk', sans-serif;
-  --family-secondary: 'Instrument Sans', sans-serif;
-  @include theme-base.theme-base("bold", $custom-colors, false);
-}
-
-@mixin bold-theme-dark {
-  --family-primary: 'Space Grotesk', sans-serif;
-  --family-secondary: 'Instrument Sans', sans-serif;
-  @include theme-base.theme-base("bold", $custom-colors, true);
-}
+$bold-theme: theme-engine.register-bulma-theme(
+  "bold",
+  ( // High contrast, vibrant colors
+    "primary": hsl(171, 100%, 36%),    // Deep teal
+    "info": hsl(195, 100%, 50%),       // Electric blue
+    "link": hsl(230, 100%, 45%),       // Rich indigo
+    "success": hsl(145, 100%, 39%),    // Emerald green
+    "warning": hsl(45, 100%, 51%),     // Bright gold
+    "danger": hsl(350, 100%, 50%),     // Pure red
+    "text": hsl(230, 25%, 18%),        // Blue-tinted dark
+    "text-strong": hsl(230, 30%, 10%), // Darker blue-gray
+    "text-light": hsl(230, 15%, 45%)   // Medium blue-gray
+  ),
+  (
+    "family-primary": "'Space Grotesk', sans-serif",
+    "family-secondary": "'Instrument Sans', sans-serif"
+  )
+);

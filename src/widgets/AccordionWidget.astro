@@ -1,57 +1,130 @@
 ---
-// Import the widget data passed from ApostropheCMS
-const { widget, options } = Astro.props;
-
+const { widget } = Astro.props;
 import AposArea from '@apostrophecms/apostrophe-astro/components/AposArea.astro';
+
+const {
+  itemBackgroundColor = 'white',
+  headerAlignment = 'left',
+  allowMultipleOpen = false,
+  defaultOpenIndex = -1,
+  items = []
+} = widget;
 ---
 
-<div class="accordion-widget accordion-container">
-
-  {widget.items.map((item) => (
-    <div class="ac" key={item.header}>
-      <h2 class="ac-header">
-        <button type="button" class="ac-trigger">{item.header}</button>
-      </h2>
-      <div class="ac-panel">
-        {/* Render area content from ApostropheCMS */}
-        {item.content && (
-          <AposArea area={item.content} /></div>
-        )}
-      </div>
-    </div>
-  ))}
+<div class='accordion-widget' data-allow-multiple={allowMultipleOpen}>
+  {
+    items.map((item, index) => (
+      <details
+        class={`accordion has-background-${itemBackgroundColor}`}
+        open={index === defaultOpenIndex}
+      >
+        <summary class={`accordion-header has-text-${headerAlignment}`}>
+          <p class={`has-text-${item.headerColor} has-text-weight-semibold`}>
+            {item.header}
+          </p>
+        </summary>
+        <div class='accordion-content p-4'>
+          <div class='content'>
+            <AposArea area={item.content} />
+          </div>
+        </div>
+      </details>
+    ))
+  }
 </div>
 
+<style>
+  .accordion {
+    border: 1px solid #dbdbdb;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+  }
+
+  .accordion-header {
+    padding: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+
+  
+
+  .accordion-header::after {
+    content: '+';
+    margin-left: auto;
+    padding: 0 1rem;
+    transition: transform 0.2s ease;
+  }
+
+  details[open] .accordion-header::after {
+    content: '-';
+  }
+
+  .accordion-content {
+    border-top: 1px solid #dbdbdb;
+  }
+
+  /* Header alignment styles */
+  .accordion-header.has-text-center {
+    justify-content: center;
+  }
+
+  .accordion-header.has-text-right {
+    justify-content: flex-end;
+  }
+</style>
+
 <script>
-  /**
- * For Demo Purposes, this Accordion is powered by accordion-js
- * You could swap this out another library or your own implementation
- */
- apos.util.onReady(function() {
-  const loadAccordion = function() {
-    import('accordion-js').then(({ default: Accordion }) => {
-      const accordions = Array.from(document.querySelectorAll('.accordion-container'));
+function initializeAccordion() {
+  const accordionContainers = document.querySelectorAll('.accordion-widget');
 
-      if (accordions.length) {
-        const options = {
-          duration: 100
-        };
-        new Accordion(accordions, options);
-        accordions.forEach(el => {
-          el.style.opacity = '1';
-        });
-      } else {
-        console.error('No accordion containers found');
-      }
-    }).catch(error => {
-      console.error('Error loading accordion-js:', error);
+  accordionContainers.forEach((accordionContainer) => {
+    const allowMultipleOpen = accordionContainer.dataset.allowMultiple === 'true';
+    const detailsElements = accordionContainer.querySelectorAll('details');
+    
+    detailsElements.forEach((detailsElement) => {
+      const summaryElement = detailsElement.querySelector('summary');
+      
+      summaryElement.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        
+        const wasOpen = detailsElement.open;
+        
+        if (!allowMultipleOpen) {
+          detailsElements.forEach((otherDetailsElement) => {
+            if (otherDetailsElement !== detailsElement) {
+              otherDetailsElement.open = false;
+            }
+          });
+        }
+        
+        // Force a reflow
+        void detailsElement.offsetHeight;
+        detailsElement.open = !wasOpen;
+      });
     });
-  };
+  });
+}
 
-  // Initial load
-  loadAccordion();
+document.addEventListener('DOMContentLoaded', initializeAccordion);
 
-  // Re-run when switching between preview and edit modes
-  apos.bus.$on('content-changed', loadAccordion);
+const observer = new MutationObserver((mutations) => {
+  const hasRelevantChanges = mutations.some(mutation => 
+    Array.from(mutation.addedNodes).some(node => 
+      node.nodeType === 1 && 
+      (node.classList?.contains('accordion-widget') || 
+       node.querySelector?.('.accordion-widget'))
+    )
+  );
+  
+  if (hasRelevantChanges) {
+    initializeAccordion();
+  }
+});
+
+observer.observe(document.body, {
+  childList: true,
+  subtree: true
 });
 </script>
