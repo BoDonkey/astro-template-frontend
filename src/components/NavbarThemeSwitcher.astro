@@ -1,0 +1,66 @@
+---
+---
+
+<div class="navbar-item">
+  <button
+    id="theme-toggle"
+    class="button is-ghost p-2"
+    aria-label="Toggle theme"
+  >
+    <span class="icon">
+      <i class="fa-solid fa-sun" aria-hidden="true"></i>
+    </span>
+  </button>
+</div>
+
+<script>
+  function initializeThemeSwitcher() {
+    const themeToggle = document.getElementById('theme-toggle');
+    const icon = themeToggle?.querySelector('i');
+
+    function updateIcon(isDark: boolean) {
+      if (!icon) return;
+      if (isDark) {
+        icon.classList.remove('fa-sun');
+        icon.classList.add('fa-moon');
+      } else {
+        icon.classList.remove('fa-moon');
+        icon.classList.add('fa-sun');
+      }
+    }
+
+    // Initial state
+    const htmlElement = document.documentElement;
+    const currentTheme = htmlElement.classList.contains('theme-dark') ? 'dark' : 'light';
+    htmlElement.classList.add(`theme-${currentTheme}`);
+    updateIcon(currentTheme === 'dark');
+
+    // Remove any existing event listeners
+    themeToggle?.removeEventListener('click', handleThemeToggle);
+    
+    // Add new event listener
+    themeToggle?.addEventListener('click', handleThemeToggle);
+
+    function handleThemeToggle() {
+      const isDark = htmlElement.classList.contains('theme-dark');
+      
+      if (isDark) {
+        htmlElement.classList.remove('theme-dark');
+        htmlElement.classList.add('theme-light');
+      } else {
+        htmlElement.classList.remove('theme-light');
+        htmlElement.classList.add('theme-dark');
+      }
+      
+      updateIcon(!isDark);
+    }
+  }
+
+  // Initialize on load
+  document.addEventListener('DOMContentLoaded', initializeThemeSwitcher);
+
+  // Reinitialize on ApostropheCMS refresh
+  if (window.apos) {
+    apos.bus.$on('refreshed', initializeThemeSwitcher);
+  }
+</script>

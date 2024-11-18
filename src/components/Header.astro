@@ -1,5 +1,6 @@
 ---
 import { useSiteConfig } from '../lib/useSiteConfig';
+import NavbarThemeSwitcher from './NavbarThemeSwitcher.astro';
 
 const { aposData } = Astro.props;
 const mainNav = aposData.home?._children || [];
@@ -24,13 +25,14 @@ function formatNavItem(page) {
 
 const headerGroup = aposData.global?.headerGroup || {};
 
+const { showThemeSwitcher = false } = headerGroup;
+
 const addFixedHeaderClass = () => {
   const fixedHeader = headerGroup.headerPosition === 'static' ? false : true;
   return fixedHeader.toString();
 };
 
 const navItems = mainNav.map(formatNavItem).filter(Boolean);
-console.log('navItems !!!!!!!!!!!!!!!!!!!!!!!', navItems);
 
 const shouldShowBurger = navItems.length > 0;
 ---
@@ -97,6 +99,14 @@ const shouldShowBurger = navItems.length > 0;
         </div>
       )
     }
+    {showThemeSwitcher && !shouldShowBurger && (
+      <div class='navbar-menu'>
+        <div class={`navbar-${headerGroup.navAlignment || 'end'}`}>
+          <NavbarThemeSwitcher />
+        </div>
+      </div>
+    )}
+    {showThemeSwitcher && shouldShowBurger && <NavbarThemeSwitcher />}
   </div>
   <div
     id='theme-marker'

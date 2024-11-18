@@ -14,14 +14,13 @@ if (aposData.notFound) {
 
 // Extract layout and theme information with default values
 const layout = aposData.global?.themeGroup.layout || 'classic';
-const theme = aposData.global?.themeGroup.theme || 'traditional-light';
-const themeMode = aposData.global?.themeGroup.mode || 'light';
+const theme = aposData.global?.themeGroup.theme || 'traditional';
 
 // Extract header information
 const headerPosition = aposData.global?.headerGroup.headerPosition || 'static';
 
 // Initialize an array to hold body classes
-const bodyClasses = [`theme-${theme}-${themeMode}`];
+const bodyClasses = [`theme-${theme}`];
 
 // Conditionally add 'has-navbar-fixed-top' based on headerPosition
 if (headerPosition === 'fixed' || headerPosition === 'fixed-fade') {
@@ -53,9 +52,7 @@ import Footer from '../components/Footer.astro';
           if (themeMarker) {
             const selectedTheme =
               themeMarker.getAttribute('data-selected-theme') || 'default';
-            const selectedMode =
-              themeMarker.getAttribute('data-selected-mode') || 'light';
-            const newThemeClass = `theme-${selectedTheme}-${selectedMode}`;
+            const newThemeClass = `theme-${selectedTheme}`;
 
             const isFixedNav =
               themeMarker.getAttribute('data-fixed-nav') === 'true';
