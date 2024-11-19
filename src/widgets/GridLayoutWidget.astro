@@ -5,6 +5,7 @@ import AposArea from '@apostrophecms/apostrophe-astro/components/AposArea.astro'
 
 // Helper to get content areas based on layout type
 const getLayoutAreas = (widget) => {
+  // Existing switch statement remains the same
   switch (widget.layoutType) {
     case 'asideMainThree':
       return [
@@ -14,7 +15,9 @@ const getLayoutAreas = (widget) => {
           colStart: 1,
           colSpan: 4,
           rowStart: 1,
-          rowSpan: 3
+          rowSpan: 3,
+          tabletColSpan: 5,
+          mobileColSpan: 12
         },
         {
           name: 'main',
@@ -22,7 +25,9 @@ const getLayoutAreas = (widget) => {
           colStart: 5,
           colSpan: 8,
           rowStart: 1,
-          rowSpan: 3
+          rowSpan: 3,
+          tabletColSpan: 7,
+          mobileColSpan: 12
         }
       ];
     case 'mainAsideThree':
@@ -33,7 +38,9 @@ const getLayoutAreas = (widget) => {
           colStart: 1,
           colSpan: 8,
           rowStart: 1,
-          rowSpan: 3
+          rowSpan: 3,
+          tabletColSpan: 7,
+          mobileColSpan: 12
         },
         {
           name: 'aside',
@@ -41,7 +48,9 @@ const getLayoutAreas = (widget) => {
           colStart: 9,
           colSpan: 4,
           rowStart: 1,
-          rowSpan: 3
+          rowSpan: 3,
+          tabletColSpan: 5,
+          mobileColSpan: 12
         }
       ];
     case 'asideTwoMain':
@@ -52,7 +61,9 @@ const getLayoutAreas = (widget) => {
           colStart: 1,
           colSpan: 4,
           rowStart: 1,
-          rowSpan: 4
+          rowSpan: 4,
+          tabletColSpan: 12,
+          mobileColSpan: 12
         },
         {
           name: 'main-top',
@@ -60,7 +71,9 @@ const getLayoutAreas = (widget) => {
           colStart: 5,
           colSpan: 8,
           rowStart: 1,
-          rowSpan: 2
+          rowSpan: 2,
+          tabletColSpan: 12,
+          mobileColSpan: 12
         },
         {
           name: 'main-bottom',
@@ -68,7 +81,9 @@ const getLayoutAreas = (widget) => {
           colStart: 5,
           colSpan: 8,
           rowStart: 3,
-          rowSpan: 2
+          rowSpan: 2,
+          tabletColSpan: 12,
+          mobileColSpan: 12
         }
       ];
     case 'twoMainAside':
@@ -79,7 +94,9 @@ const getLayoutAreas = (widget) => {
           colStart: 1,
           colSpan: 8,
           rowStart: 1,
-          rowSpan: 2
+          rowSpan: 2,
+          tabletColSpan: 12,
+          mobileColSpan: 12
         },
         {
           name: 'main-bottom',
@@ -87,7 +104,9 @@ const getLayoutAreas = (widget) => {
           colStart: 1,
           colSpan: 8,
           rowStart: 3,
-          rowSpan: 2
+          rowSpan: 2,
+          tabletColSpan: 12,
+          mobileColSpan: 12
         },
         {
           name: 'aside',
@@ -95,7 +114,9 @@ const getLayoutAreas = (widget) => {
           colStart: 9,
           colSpan: 4,
           rowStart: 1,
-          rowSpan: 4
+          rowSpan: 4,
+          tabletColSpan: 12,
+          mobileColSpan: 12
         }
       ];
     case 'headerTwoColFooter':
@@ -106,7 +127,9 @@ const getLayoutAreas = (widget) => {
           colStart: 1,
           colSpan: 12,
           rowStart: 1,
-          rowSpan: 1
+          rowSpan: 1,
+          tabletColSpan: 12,
+          mobileColSpan: 12
         },
         {
           name: 'left',
@@ -114,7 +137,9 @@ const getLayoutAreas = (widget) => {
           colStart: 1,
           colSpan: 6,
           rowStart: 2,
-          rowSpan: 1
+          rowSpan: 1,
+          tabletColSpan: 6,
+          mobileColSpan: 12
         },
         {
           name: 'right',
@@ -122,7 +147,9 @@ const getLayoutAreas = (widget) => {
           colStart: 7,
           colSpan: 6,
           rowStart: 2,
-          rowSpan: 1
+          rowSpan: 1,
+          tabletColSpan: 6,
+          mobileColSpan: 12
         },
         {
           name: 'footer',
@@ -130,7 +157,9 @@ const getLayoutAreas = (widget) => {
           colStart: 1,
           colSpan: 12,
           rowStart: 3,
-          rowSpan: 1
+          rowSpan: 1,
+          tabletColSpan: 12,
+          mobileColSpan: 12
         }
       ];
     case 'featuredThreeGrid':
@@ -141,7 +170,9 @@ const getLayoutAreas = (widget) => {
           colStart: 1,
           colSpan: 12,
           rowStart: 1,
-          rowSpan: 1
+          rowSpan: 1,
+          tabletColSpan: 12,
+          mobileColSpan: 12
         },
         {
           name: 'col1',
@@ -149,7 +180,9 @@ const getLayoutAreas = (widget) => {
           colStart: 1,
           colSpan: 4,
           rowStart: 2,
-          rowSpan: 1
+          rowSpan: 1,
+          tabletColSpan: 6,
+          mobileColSpan: 12
         },
         {
           name: 'col2',
@@ -157,7 +190,9 @@ const getLayoutAreas = (widget) => {
           colStart: 5,
           colSpan: 4,
           rowStart: 2,
-          rowSpan: 1
+          rowSpan: 1,
+          tabletColSpan: 6,
+          mobileColSpan: 12
         },
         {
           name: 'col3',
@@ -165,39 +200,343 @@ const getLayoutAreas = (widget) => {
           colStart: 9,
           colSpan: 4,
           rowStart: 2,
-          rowSpan: 1
+          rowSpan: 1,
+          tabletColSpan: 12,
+          mobileColSpan: 12
+        }
+      ];
+    case 'magazineLayout':
+      return [
+        {
+          name: 'headline',
+          content: widget.headlineContent,
+          colStart: 1,
+          colSpan: 8,
+          rowStart: 1,
+          rowSpan: 2,
+          tabletColSpan: 8,
+          mobileColSpan: 12
+        },
+        {
+          name: 'sidebar',
+          content: widget.sidebarContent,
+          colStart: 9,
+          colSpan: 4,
+          rowStart: 1,
+          rowSpan: 3,
+          tabletColSpan: 4,
+          mobileColSpan: 12
+        },
+        {
+          name: 'feature1',
+          content: widget.feature1Content,
+          colStart: 1,
+          colSpan: 4,
+          rowStart: 3,
+          rowSpan: 1,
+          tabletColSpan: 4,
+          mobileColSpan: 12
+        },
+        {
+          name: 'feature2',
+          content: widget.feature2Content,
+          colStart: 5,
+          colSpan: 4,
+          rowStart: 3,
+          rowSpan: 1,
+          tabletColSpan: 4,
+          mobileColSpan: 12
+        },
+        {
+          name: 'feature3',
+          content: widget.feature3Content,
+          colStart: 9,
+          colSpan: 4,
+          rowStart: 3,
+          rowSpan: 1,
+          tabletColSpan: 4,
+          mobileColSpan: 12
+        }
+      ];
+
+    case 'contentHub':
+      return [
+        {
+          name: 'hero',
+          content: widget.heroContent,
+          colStart: 1,
+          colSpan: 12,
+          rowStart: 1,
+          rowSpan: 1,
+          tabletColSpan: 12,
+          mobileColSpan: 12
+        },
+        {
+          name: 'featured',
+          content: widget.featuredHubContent,
+          colStart: 1,
+          colSpan: 8,
+          rowStart: 2,
+          rowSpan: 2,
+          tabletColSpan: 8,
+          mobileColSpan: 12
+        },
+        {
+          name: 'quickLinks',
+          content: widget.quickLinksContent,
+          colStart: 9,
+          colSpan: 4,
+          rowStart: 2,
+          rowSpan: 2,
+          tabletColSpan: 4,
+          mobileColSpan: 12
+        },
+        {
+          name: 'section1',
+          content: widget.section1Content,
+          colStart: 1,
+          colSpan: 6,
+          rowStart: 4,
+          rowSpan: 1,
+          tabletColSpan: 6,
+          mobileColSpan: 12
+        },
+        {
+          name: 'section2',
+          content: widget.section2Content,
+          colStart: 7,
+          colSpan: 6,
+          rowStart: 4,
+          rowSpan: 1,
+          tabletColSpan: 6,
+          mobileColSpan: 12
+        },
+        {
+          name: 'fullWidth',
+          content: widget.fullWidthContent,
+          colStart: 1,
+          colSpan: 12,
+          rowStart: 5,
+          rowSpan: 1,
+          tabletColSpan: 12,
+          mobileColSpan: 12
+        }
+      ];
+
+    case 'galleryMasonry':
+      return [
+        {
+          name: 'featured',
+          content: widget.galleryFeaturedContent,
+          colStart: 1,
+          colSpan: 8,
+          rowStart: 1,
+          rowSpan: 2,
+          tabletColSpan: 8,
+          mobileColSpan: 12
+        },
+        {
+          name: 'side1',
+          content: widget.gallerySide1Content,
+          colStart: 9,
+          colSpan: 4,
+          rowStart: 1,
+          rowSpan: 1,
+          tabletColSpan: 4,
+          mobileColSpan: 6
+        },
+        {
+          name: 'side2',
+          content: widget.gallerySide2Content,
+          colStart: 9,
+          colSpan: 4,
+          rowStart: 2,
+          rowSpan: 1,
+          tabletColSpan: 4,
+          mobileColSpan: 6
+        },
+        {
+          name: 'bottom',
+          content: widget.galleryBottomContent,
+          colStart: 1,
+          colSpan: 12,
+          rowStart: 3,
+          rowSpan: 1,
+          tabletColSpan: 12,
+          mobileColSpan: 12
+        }
+      ];
+
+    case 'dashboardLayout':
+      return [
+        {
+          name: 'mainMetric',
+          content: widget.mainMetricContent,
+          colStart: 1,
+          colSpan: 8,
+          rowStart: 1,
+          rowSpan: 1,
+          tabletColSpan: 8,
+          mobileColSpan: 12
+        },
+        {
+          name: 'sideMetrics',
+          content: widget.sideMetricsContent,
+          colStart: 9,
+          colSpan: 4,
+          rowStart: 1,
+          rowSpan: 1,
+          tabletColSpan: 4,
+          mobileColSpan: 12
+        },
+        {
+          name: 'chart',
+          content: widget.chartContent,
+          colStart: 1,
+          colSpan: 6,
+          rowStart: 2,
+          rowSpan: 1,
+          tabletColSpan: 12,
+          mobileColSpan: 12
+        },
+        {
+          name: 'table',
+          content: widget.tableContent,
+          colStart: 7,
+          colSpan: 6,
+          rowStart: 2,
+          rowSpan: 1,
+          tabletColSpan: 12,
+          mobileColSpan: 12
+        }
+      ];
+
+    case 'productShowcase':
+      return [
+        {
+          name: 'mainProduct',
+          content: widget.mainProductContent,
+          colStart: 1,
+          colSpan: 6,
+          rowStart: 1,
+          rowSpan: 2,
+          tabletColSpan: 6,
+          mobileColSpan: 12
+        },
+        {
+          name: 'details',
+          content: widget.productDetailsContent,
+          colStart: 7,
+          colSpan: 6,
+          rowStart: 1,
+          rowSpan: 2,
+          tabletColSpan: 6,
+          mobileColSpan: 12
+        },
+        {
+          name: 'related1',
+          content: widget.related1Content,
+          colStart: 1,
+          colSpan: 4,
+          rowStart: 3,
+          rowSpan: 1,
+          tabletColSpan: 4,
+          mobileColSpan: 12
+        },
+        {
+          name: 'related2',
+          content: widget.related2Content,
+          colStart: 5,
+          colSpan: 4,
+          rowStart: 3,
+          rowSpan: 1,
+          tabletColSpan: 4,
+          mobileColSpan: 12
+        },
+        {
+          name: 'related3',
+          content: widget.related3Content,
+          colStart: 9,
+          colSpan: 4,
+          rowStart: 3,
+          rowSpan: 1,
+          tabletColSpan: 4,
+          mobileColSpan: 12
         }
       ];
     case 'custom':
     default:
-      return widget.customGrid.contentAreas;
+      return widget.customGrid.contentAreas.map((area) => ({
+        ...area,
+        tabletColSpan: area.tabletColSpan || area.colSpan,
+        mobileColSpan: 12
+      }));
   }
 };
 
 // Get layout configuration
 const getLayoutConfig = (widget) => {
   const presetConfigs = {
+    // Existing layouts
     asideMainThree: { rows: 3, columns: 12, gap: '1rem' },
     mainAsideThree: { rows: 3, columns: 12, gap: '1rem' },
     asideTwoMain: { rows: 4, columns: 12, gap: '1rem' },
     twoMainAside: { rows: 4, columns: 12, gap: '1rem' },
     headerTwoColFooter: { rows: 3, columns: 12, gap: '1rem' },
-    featuredThreeGrid: { rows: 2, columns: 12, gap: '1rem' }
+    featuredThreeGrid: { rows: 2, columns: 12, gap: '1rem' },
+
+    // New layouts
+    magazineLayout: {
+      rows: 3,
+      columns: 12,
+      gap: '1.5rem' // Larger gap for magazine-style spacing
+    },
+
+    contentHub: {
+      rows: 5,
+      columns: 12,
+      gap: '2rem' // Larger gap for content sections
+    },
+
+    galleryMasonry: {
+      rows: 3,
+      columns: 12,
+      gap: '1rem' // Standard gap for gallery items
+    },
+
+    dashboardLayout: {
+      rows: 2,
+      columns: 12,
+      gap: '1.5rem' // Comfortable spacing for dashboard elements
+    },
+
+    productShowcase: {
+      rows: 3,
+      columns: 12,
+      gap: '2rem' // Larger gap to separate product sections
+    }
   };
 
-  return widget.layoutType === 'custom'
-    ? {
-        rows: widget.customGrid.rows,
-        columns: widget.customGrid.columns,
-        gap: widget.customGrid.gap,
-        padding: widget.customGrid.padding,
-        margin: widget.customGrid.margin
-      }
-    : {
-        ...presetConfigs[widget.layoutType],
-        padding: '1rem',
-        margin: 'auto'
-      };
+  const config =
+    widget.layoutType === 'custom'
+      ? {
+          rows: widget.customGrid.rows,
+          columns: widget.customGrid.columns,
+          gap: widget.customGrid.gap,
+          padding: widget.customGrid.padding,
+          margin: widget.customGrid.margin
+        }
+      : {
+          ...presetConfigs[widget.layoutType],
+          padding: '1rem',
+          margin: 'auto'
+        };
+
+  return {
+    ...config,
+    mobileGap: '0.5rem',
+    mobilePadding: '0.5rem'
+  };
 };
 
 const config = getLayoutConfig(widget);
@@ -207,11 +546,14 @@ const maxWidth = widget.maxWidth ? widget.maxWidth : '';
 const layoutClasses = [
   'custom-layout-widget',
   `custom-layout-widget-${widgetId}`,
+  `layout-type-${widget.layoutType}`,
   `${widget.overrideClass || ''}`,
   maxWidth
-].filter(Boolean).join(' ');
+]
+  .filter(Boolean)
+  .join(' ');
 
-// Generate area styles
+// Generate area styles with responsive breakpoints
 const areaStyles = `
   <style>
     ${areas
@@ -220,6 +562,45 @@ const areaStyles = `
       .custom-layout-widget-${widgetId} .area-${area.name} {
         grid-column: ${area.colStart} / span ${area.colSpan};
         grid-row: ${area.rowStart} / span ${area.rowSpan};
+        
+        /* Apply min-height if set */
+        ${
+          widget.layoutType !== 'custom' && widget.areaStyles?.minHeight
+            ? `min-height: ${widget.areaStyles.minHeight};`
+            : ''
+        }
+        
+        /* Apply vertical alignment if set */
+        ${
+          widget.layoutType !== 'custom' && widget.areaStyles?.verticalAlign
+            ? `align-self: ${widget.areaStyles.verticalAlign};`
+            : ''
+        }
+        
+        /* For custom layouts, apply per-area styles */
+        ${
+          widget.layoutType === 'custom' && area.minHeight
+            ? `min-height: ${area.minHeight};`
+            : ''
+        }
+        ${
+          widget.layoutType === 'custom' && area.verticalAlign
+            ? `align-self: ${area.verticalAlign};`
+            : ''
+        }
+      }
+
+      @media (max-width: 1023px) {
+        .custom-layout-widget-${widgetId} .area-${area.name} {
+          grid-column: span ${area.tabletColSpan};
+          grid-row: auto;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .custom-layout-widget-${widgetId} .area-${area.name} {
+          grid-column: span ${area.mobileColSpan};
+        }
       }
     `
       )
@@ -233,10 +614,14 @@ const areaStyles = `
     id={`custom-layout-widget-${widgetId}`}
     class={layoutClasses}
     data-widget-id={widgetId}
+    data-layout-type={widget.layoutType}
   >
     {
       areas.map((area) => (
-        <div class={`custom-layout-area area-${area.name}`}>
+        <div
+          class={`custom-layout-area area-${area.name} layout-${widget.layoutType}-${area.name}`}
+          data-area-name={area.name}
+        >
           <AposArea area={area.content} />
         </div>
       ))
@@ -249,7 +634,7 @@ const areaStyles = `
   define:vars={{
     columns: config.columns,
     rows: config.rows,
-    gap: config.gap,
+    gap: widget.areaStyles?.gapOverride || config.gap,
     padding: config.padding,
     margin: config.margin
   }}
@@ -265,18 +650,67 @@ const areaStyles = `
     place-items: start stretch;
   }
 
-  .max-width-768 { max-width: 768px; }
-  .max-width-960 { max-width: 960px; }
-  .max-width-1152 { max-width: 1152px; }
-  .max-width-1344 { max-width: 1344px; }
+  .max-width-768 {
+    max-width: 768px;
+  }
+  .max-width-960 {
+    max-width: 960px;
+  }
+  .max-width-1152 {
+    max-width: 1152px;
+  }
+  .max-width-1344 {
+    max-width: 1344px;
+  }
+
+  @media (max-width: 1023px) {
+    .custom-layout-widget {
+      grid-template-columns: repeat(12, 1fr);
+      grid-template-rows: auto;
+      gap: calc(var(--gap) * 0.75);
+    }
+  }
 
   @media (max-width: 768px) {
     .custom-layout-widget {
       grid-template-columns: 1fr;
+      gap: calc(var(--gap) * 0.5);
     }
 
     .custom-layout-widget [class^='area-'] {
       grid-column: 1;
     }
   }
+</style>
+<style is:global>
+  /* Layout Preview Styles - Used in widget editor UI */
+  .layout-preview-container {
+  margin: 1rem 0;
+}
+
+.layout-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.layout-card {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 0.75rem;
+  background: white;
+}
+
+.layout-title {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.preview-svg {
+  width: 100%;
+  height: auto;
+  background: white;
+}
 </style>
