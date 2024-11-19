@@ -23,5 +23,8 @@
     "dayjs": "^1.11.10",
     "sass": "^1.80.6",
     "vite": "^5.0.7"
+  },
+  "devDependencies": {
+    "postcss-viewport-to-container-toggle": "^1.0.0"
   }
 }
