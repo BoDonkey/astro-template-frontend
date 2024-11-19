@@ -3,7 +3,6 @@ import AposArea from '@apostrophecms/apostrophe-astro/components/AposArea.astro'
 import dayjs from 'dayjs';
 
 const { page, piece, user, query } = Astro.props.aposData;
-const { main } = piece;
 ---
 
 <section class="bp-content">
@@ -11,5 +10,5 @@ const { main } = piece;
   <h4>
     Released On { dayjs(piece.publishedAt).format('MMMM D, YYYY') }
   </h4>
-  <AposArea area={main} />
+  <AposArea area={piece.mainContent} />
 </section>
