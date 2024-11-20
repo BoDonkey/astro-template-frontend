@@ -1,0 +1,80 @@
+---
+interface Props {
+  pieces: any[];
+  showImage?: boolean;
+  imageWidth?: 4 | 5 | 6;  // Bulma column sizes
+  showAuthorAvatar?: boolean;
+  excerptLength?: number;
+}
+
+import AposArea from '@apostrophecms/apostrophe-astro/components/AposArea.astro';
+
+const {
+  pieces,
+  showImage = true,
+  imageWidth = 4,
+  showAuthorAvatar = true,
+  excerptLength
+} = Astro.props;
+
+const textWidth = showImage ? 12 - imageWidth : 12;
+---
+
+<div class='content'>
+  {pieces.map((article) => (
+    <article class='mb-6 pb-6 border-bottom'>
+      <div class='columns is-vcentered'>
+        <div class={`column is-${textWidth}`}>
+          <a href={article._url} class='has-text-dark'>
+            <h2 class='title is-3'>{article.title}</h2>
+          </a>
+          <div class='author-info mb-3'>
+            <div class='media'>
+              {showAuthorAvatar && article._author[0]?.profileImage && (
+                <div class='media-left'>
+                  <figure class='image is-32x32'>
+                    <AposArea 
+                      area={article._author[0].profileImage}
+                      imageOptions={{ 
+                        additionalClasses: 'is-rounded object-fit-cover',
+                        sizes: '32px'
+                      }}
+                    />
+                  </figure>
+                </div>
+              )}
+              <div class='media-content'>
+                <p class='has-text-grey'>
+                  By <strong>{article._author[0].title}</strong> |
+                  {new Date(article.publishDate).toLocaleDateString()}
+                </p>
+              </div>
+            </div>
+          </div>
+          <p class='mb-4'>
+            {excerptLength 
+              ? article.excerpt.slice(0, excerptLength) + (article.excerpt.length > excerptLength ? '...' : '')
+              : article.excerpt
+            }
+          </p>
+          <a href={article._url} class='button is-link'>
+            Read Full Article
+          </a>
+        </div>
+        {showImage && article?._heroImage?.[0] && (
+          <div class={`column is-${imageWidth}`}>
+            <figure class='image is-3by2'>
+              <AposArea 
+                area={article._heroImage}
+                imageOptions={{ 
+                  additionalClasses: 'has-shadow object-fit-cover',
+                  sizes: `(max-width: 768px) 100vw, ${imageWidth/12 * 100}vw`
+                }}
+              />
+            </figure>
+          </div>
+        )}
+      </div>
+    </article>
+  ))}
+</div>

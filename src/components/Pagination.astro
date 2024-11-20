@@ -1,0 +1,25 @@
+---
+interface Props {
+  pages: Array<{ number: number; current: boolean; url: string }>;
+  class?: string;
+}
+
+const { pages, class: className = '' } = Astro.props;
+---
+
+<nav class={`pagination is-centered ${className}`} role='navigation' aria-label='pagination'>
+  <ul class='pagination-list'>
+    {pages.map((p) => (
+      <li>
+        <a
+          href={p.url}
+          class={`pagination-link ${p.current ? 'is-current' : ''}`}
+          aria-label={`Go to page ${p.number}`}
+          aria-current={p.current ? 'page' : undefined}
+        >
+          {p.number}
+        </a>
+      </li>
+    ))}
+  </ul>
+</nav>

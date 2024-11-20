@@ -2,8 +2,22 @@
 import setParameter from '@apostrophecms/apostrophe-astro/lib/aposSetQueryParameter.js';
 import AposArea from '@apostrophecms/apostrophe-astro/components/AposArea.astro';
 
-const { page, user, query, piecesFilters, pieces, currentPage, totalPages } =
-  Astro.props.aposData;
+import Pagination from '../components/Pagination.astro';
+
+import HeroGrid from '../layouts/article-layouts/HeroGrid.astro';
+import ListAside from '../layouts/article-layouts/ListAside.astro';
+import Standard from '../layouts/article-layouts/Standard.astro';
+
+const {
+  page,
+  user,
+  query,
+  piecesFilters = [],
+  pieces,
+  currentPage,
+  totalPages
+} = Astro.props.aposData;
+
 const pages = [];
 for (let i = 1; i <= totalPages; i++) {
   pages.push({
@@ -12,187 +26,81 @@ for (let i = 1; i <= totalPages; i++) {
     url: setParameter(Astro.url, 'page', i)
   });
 }
-console.log('pieces', pieces[0]._author);
 ---
 
-<section class='section'>
+<section class='content-main content-index-page section'>
   <div class='container'>
-    {
-      page.indexLayout === 'heroGrid' && (
-        <>
-          {/* Hero Article */}
-          {pieces[0] && (
-            <div class='columns is-vcentered mb-6'>
-              <div class='column is-two-thirds'>
-                {pieces[0]?._heroImage[0] && (
-                  <figure class='image hero-image'>
-                    <img
-                      src={pieces[0]._heroImage[0].attachment._urls.full}
-                      alt={pieces[0]._heroImage[0].attachment.alt || ''}
-                    />
-                  </figure>
-                )}
-              </div>
-              <div class='column'>
-                <h1 class='title is-2'>{pieces[0].title}</h1>
-                <p class='subtitle'>{pieces[0].excerpt}</p>
-                <div class='author-info mb-4'>
-                  <p class='has-text-grey'>
-                    By {pieces[0]._author[0].title} |
-                    {new Date(pieces[0].publishDate).toLocaleDateString()}
-                  </p>
-                </div>
-                <a href={pieces[0]._url} class='button is-primary'>
-                  Read More
-                </a>
-              </div>
-            </div>
-          )}
 
-          <div class='columns is-multiline'>
-            {pieces.slice(1).map((article) => (
-              <div class='column is-4'>
-                <div class='card'>
-                  {article?._heroImage[0] && (
-                    <div class='card-image'>
-                      <figure class='image'>
-                        <img
-                          src={article._heroImage[0].attachment._urls.full}
-                          alt={article.title}
-                        />
-                      </figure>
-                    </div>
-                  )}
-                  <div class='card-content'>
-                    <h3 class='title is-4'>{article.title}</h3>
-                    <p class='subtitle is-6'>
-                      By {article._author[0].title} |
-                      {new Date(article.publishDate).toLocaleDateString()}
-                    </p>
-                    <p>{article.excerpt}</p>
-                  </div>
-                  <footer class='card-footer'>
-                    <a href={article._url} class='card-footer-item'>
-                      Read More
-                    </a>
-                  </footer>
-                </div>
-              </div>
-            ))}
-          </div>
-        </>
-      )
-    }
-
+    {/* Global Masthead - Shows for all layouts */}
     {
-      page.indexLayout === 'listAside' && (
-        <div class='columns'>
-          <div class='column is-8'>
-            {pieces.map((article) => (
-              <article class='box mb-6'>
-                <div class='columns'>
-                  <div class='column is-7'>
-                    <h2 class='title is-3'>{article.title}</h2>
-                    <div class='author-info mb-3'>
-                      <p class='has-text-grey'>
-                        By {article._author[0].title} |
-                        {new Date(article.publishDate).toLocaleDateString()}
-                      </p>
-                    </div>
-                    <div class='content'>
-                      <p>{article.excerpt}</p>
-                    </div>
-                    {article._related?.length > 0 && (
-                      <div class='related-articles mt-4'>
-                        <p class='is-size-6 has-text-weight-bold mb-2'>
-                          Related Articles:
-                        </p>
-                        <div class='tags'>
-                          {article._related.map((related) => (
-                            <a href={related._url} class='tag is-info is-light'>
-                              {related.title}
-                            </a>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                  <div class='column'>
-                    {article?._heroImage && (
-                      <figure class='image'>
-                        <img
-                          src={article._heroImage[0].attachment._urls.full}
-                          alt={article._heroImage[0].attachment._alt || ''}
-                        />
-                      </figure>
-                    )}
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
-          <div class='column'>
-            <div class='box sticky-top'>
-              <h3 class='title is-4'>Quick Navigation</h3>
-              <aside class='menu'>
-                {pieces.map((article) => (
-                  <p class='menu-label'>
-                    <a href={article._url}>{article.title}</a>
-                  </p>
-                ))}
-              </aside>
-            </div>
+      page.masthead && (
+        <div class='container mb-6'>
+          <div class='content has-text-centered'>
+            <AposArea area={page.masthead} />
           </div>
         </div>
       )
     }
 
     {
-      page.indexLayout === 'standard' && (
-        <div class='content'>
-          {pieces.map((article) => (
-            <article class='mb-6'>
-              <h2 class='title is-3'>{article.title}</h2>
-              <div class='author-info mb-3'>
-                <p class='has-text-grey'>
-                  By {article._author[0].title} |
-                  {new Date(article.publishDate).toLocaleDateString()}
-                </p>
-              </div>
-              <p>{article.excerpt}</p>
-              <a href={article._url} class='button is-link is-light'>
-                Read More
-              </a>
-            </article>
+      Array.isArray(piecesFilters) && piecesFilters.length > 0 && (
+        <div class='tags are-medium mb-5'>
+          {piecesFilters.map((filter) => (
+            <a
+              href={filter.url}
+              class={`tag ${filter.active ? 'is-primary' : 'is-light'}`}
+            >
+              {filter.label}
+            </a>
           ))}
         </div>
       )
     }
 
-    {/* Pagination */}
-    {
-      totalPages > 1 && (
-        <nav
-          class='pagination is-centered mt-6'
-          role='navigation'
-          aria-label='pagination'
-        >
-          <ul class='pagination-list'>
-            {pages.map((p) => (
-              <li>
-                <a
-                  href={p.url}
-                  class={`pagination-link ${p.current ? 'is-current' : ''}`}
-                  aria-label={`Go to page ${p.number}`}
-                  aria-current={p.current ? 'page' : undefined}
-                >
-                  {p.number}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      )
-    }
-  </div>
+    {/* Before Content Area */}
+    {page.beforeContent && (
+      <div class='mb-6'>
+        <AposArea area={page.beforeContent} />
+      </div>
+    )}
+
+    {page.indexLayout === 'heroGrid' && (
+      <HeroGrid
+        pieces={pieces}
+        gridColumns={4}
+        heroImageClass="is-2by1"
+      />
+    )}
+
+    {page.indexLayout === 'listAside' && (
+    <ListAside
+      pieces={pieces}
+      sidebarWidth={4}
+      showRelated={true}
+      showAuthorAvatar={true}
+      sidebarArea={page.sidebarContent}
+    />
+    )}
+
+    {page.indexLayout === 'standard' && (
+    <Standard
+      pieces={pieces}
+      showImage={true}
+      imageWidth={4}
+      showAuthorAvatar={true}
+      excerptLength={200}
+    />
+    )}
+
+    {/* After Content Area */}
+    {page.afterContent && (
+      <div class='mt-6'>
+        <AposArea area={page.afterContent} />
+      </div>
+    )}
+
+{totalPages > 1 && (
+  <Pagination pages={pages} class="mt-6" />
+)}
+</div>
 </section>
