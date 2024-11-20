@@ -4,7 +4,6 @@ import AposArea from '@apostrophecms/apostrophe-astro/components/AposArea.astro'
 
 const { page, user, query, piecesFilters, pieces, currentPage, totalPages } =
   Astro.props.aposData;
-console.log('pieces', pieces[0]._heroImage[0].attachment._urls.full);
 const pages = [];
 for (let i = 1; i <= totalPages; i++) {
   pages.push({
@@ -13,6 +12,7 @@ for (let i = 1; i <= totalPages; i++) {
     url: setParameter(Astro.url, 'page', i)
   });
 }
+console.log('pieces', pieces[0]._author);
 ---
 
 <section class='section'>
@@ -55,7 +55,7 @@ for (let i = 1; i <= totalPages; i++) {
                 <div class='card'>
                   {article?._heroImage[0] && (
                     <div class='card-image'>
-                      <figure class='image is-16by9'>
+                      <figure class='image'>
                         <img
                           src={article._heroImage[0].attachment._urls.full}
                           alt={article.title}
@@ -66,7 +66,7 @@ for (let i = 1; i <= totalPages; i++) {
                   <div class='card-content'>
                     <h3 class='title is-4'>{article.title}</h3>
                     <p class='subtitle is-6'>
-                      By {article._author[0].name} |
+                      By {article._author[0].title} |
                       {new Date(article.publishDate).toLocaleDateString()}
                     </p>
                     <p>{article.excerpt}</p>
@@ -155,7 +155,7 @@ for (let i = 1; i <= totalPages; i++) {
               <h2 class='title is-3'>{article.title}</h2>
               <div class='author-info mb-3'>
                 <p class='has-text-grey'>
-                  By {article._author.title} |
+                  By {article._author[0].title} |
                   {new Date(article.publishDate).toLocaleDateString()}
                 </p>
               </div>
