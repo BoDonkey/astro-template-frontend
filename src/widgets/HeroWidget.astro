@@ -24,6 +24,34 @@ const {
   callToAction
 } = widget;
 
+const getBackgroundImageUrl = () => {
+  if (!Array.isArray(_backgroundImage) || !_backgroundImage.length) {
+    return `https://picsum.photos/1920/1080?random=${Math.random()}`;
+  }
+  return _backgroundImage[0]?.attachment?._urls?.full;
+};
+
+const getBackgroundImageAlt = () => {
+  if (!Array.isArray(_backgroundImage) || !_backgroundImage.length) return '';
+  return _backgroundImage[0]?.attachment?._alt || '';
+};
+
+const backgroundImageUrl = getBackgroundImageUrl();
+const backgroundImageAlt = getBackgroundImageAlt();
+
+const getVideoSource = (video) => {
+  if (!video?._url || !video?.extension) {
+    return null;
+  }
+  return {
+    url: video._url,
+    type: `video/${video.extension}`
+  };
+};
+
+const mainVideo = getVideoSource(videoBackground);
+const mobileVideo = getVideoSource(videoBackgroundMobile);
+
 // Helper function to convert color values to Bulma classes
 const getBulmaColorClass = (color, type = 'text', modifier = '') => {
   if (!color) return '';
@@ -93,23 +121,21 @@ const subtitleClass = getBulmaColorClass(
     <section class={`hero ${heightClass}`}>
       {/* Background layer with conditional rendering */}
       <div class='hero-background'>
-        {background === 'image' ? (
-          <img
-            src={_backgroundImage[0].attachment._urls.full}
-            alt={_backgroundImage[0].attachment._alt || ''}
-            style={`object-position: center ${imagePosition}`}
-          />
-        ) : background === 'video' ? (
-          <video autoplay muted loop playsinline class='background-video'>
-            <source
-              src={videoBackground?._url}
-              type={`video/${videoBackground.extension}`}
-            />
-          </video>
-        ) : (
-          background === 'color' && <div class='color-background' />
-        )}
-      </div>
+  {background === 'image' && backgroundImageUrl ? (
+    <img
+      src={backgroundImageUrl}
+      alt={getBackgroundImageAlt()}
+      style={`object-position: center ${imagePosition}`}
+    />
+    ) : background === 'video' && (mainVideo || mobileVideo) ? (
+      <video autoplay muted loop playsinline class='background-video'>
+        {mainVideo && <source src={mainVideo.url} type={mainVideo.type} />}
+        {mobileVideo && <source src={mobileVideo.url} type={mobileVideo.type} />}
+      </video>
+    ) : (
+      <div class='color-background' />
+    )}
+  </div>
 
       {/* Overlay layer - show for both image and video */}
       {enableOverlay && (background === 'image' || background === 'video') && (
