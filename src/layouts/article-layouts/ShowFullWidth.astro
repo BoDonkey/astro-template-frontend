@@ -1,0 +1,83 @@
+---
+interface Props {
+  article: any;
+  showAuthorAvatar?: boolean;
+}
+
+import AposArea from '@apostrophecms/apostrophe-astro/components/AposArea.astro';
+
+const {
+  article,
+  showAuthorAvatar = true
+} = Astro.props;
+---
+
+<article class="full-width-article">
+  {article._heroImage?.[0] && (
+    <div class="hero is-large">
+      <figure class="image is-16by9">
+        <img
+          src={article._heroImage[0].attachment._urls.full}
+          alt={article._heroImage[0].attachment.alt || ''}
+          class="object-fit-cover"
+        />
+      </figure>
+    </div>
+  )}
+
+  <div class="section">
+    <div class="container">
+      <h1 class="title is-1 mb-6">{article.title}</h1>
+      <div class="columns">
+        <div class="column is-8">
+          <div class="content">
+            <AposArea area={article.mainContent} />
+          </div>
+        </div>
+        <div class="column is-4">
+          <div class="box sticky-top">
+            <div class="media mb-4">
+              {showAuthorAvatar && article._author[0]?.profileImage && (
+                <div class="media-left">
+                  <figure class="image is-64x64">
+                    <AposArea
+                        area={article._author[0].profileImage}
+                        imageOptions={{
+                          additionalClasses: 'is-rounded object-fit-cover'
+                        }}
+                      />
+                  </figure>
+                </div>
+              )}
+              <div class="media-content">
+                <p class="title is-4">{article._author[0].title}</p>
+                <p class="subtitle is-6">
+                  {new Date(article.publishDate).toLocaleDateString()}
+                </p>
+              </div>
+            </div>
+            {article._tags?.length > 0 && (
+              <div class="tags">
+                {article._tags.map(tag => (
+                  <span class="tag is-primary is-light">{tag.title}</span>
+                ))}
+              </div>
+            )}
+            {article._related?.length > 0 && (
+              <div class="related-articles mt-5">
+                <h4 class="title is-5">Related Articles</h4>
+                <div class="menu">
+                  {article._related.map(related => (
+                    <a href={related._url} class="menu-item">
+                      {related.title}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
