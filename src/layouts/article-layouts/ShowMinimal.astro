@@ -1,0 +1,54 @@
+---
+interface Props {
+  article: any;
+}
+
+import AposArea from '@apostrophecms/apostrophe-astro/components/AposArea.astro';
+
+const { article } = Astro.props;
+---
+
+<article class="minimal-article">
+  <div class="section">
+    <div class="container is-max-desktop">
+      <h1 class="title is-2">{article.title}</h1>
+      <p class="subtitle is-6 mb-6">
+        {new Date(article.publishDate).toLocaleDateString()} · By {article._author[0].title}
+      </p>
+
+      <div class="content">
+        <AposArea area={article.mainContent} />
+      </div>
+
+      {article._related?.length > 0 && (
+        <div class="box mt-6">
+          <h4 class="title is-5 mb-4">More Articles</h4>
+          <div class="columns is-multiline">
+            {article._related.map(related => (
+              <div class="column is-6">
+                <a href={related._url} class="has-text-dark">
+                  <div class="card">
+                    {related._heroImage?.[0] && (
+                      <div class="card-image">
+                        <figure class="image is-16by9">
+                          <img 
+                            src={related._heroImage[0].attachment._urls.full}
+                            alt={related.title}
+                            class="object-fit-cover"
+                          />
+                        </figure>
+                      </div>
+                    )}
+                    <div class="card-content">
+                      <p class="title is-5">{related.title}</p>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  </div>
+</article>

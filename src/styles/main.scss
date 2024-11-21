@@ -39,6 +39,22 @@ body {
     'Arial',
     sans-serif
   );
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--family-primary, inherit);
+}
+
+// Overrides for the Apostrophe Admin UI
+body {
+  & [data-apos-refreshable] .navbar {
+    z-index: 2000;
+  }
 
   & [data-apos-refreshable] .navbar.is-fixed-top {
     top: 112px;
@@ -47,14 +63,6 @@ body {
   &.has-navbar-fixed-top .main-content {
     padding-top: 34px;
   }
-}
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: var(--family-primary, inherit);
 }
 
 .apos-area-widget-controls.apos-area-widget-controls--modify,

@@ -54,9 +54,9 @@ export function useSiteConfig(globalData) {
     if (isActive) {
       classes.push('is-active');
       if (headerGroup.headerActiveColor) {
-        classes.push(`has-text-${headerGroup.headerActiveColor}`);
+        classes.push(`has-background-${headerGroup.headerActiveColor}`);
         if (headerGroup.headerActiveModifier) {
-          classes.push(headerGroup.headerActiveModifier);
+          classes.push(`has-background-${headerGroup.headerActiveColor}-${headerGroup.headerActiveModifier}`);
         }
       }
     }

@@ -29,5 +29,12 @@ export default defineConfig({
         '@layouts': path.resolve('./src/layouts')
       }
     }
+  },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        api: 'modern-compiler',
+      }
+    }
   }
 });

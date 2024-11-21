@@ -63,15 +63,18 @@ const textWidth = showImage ? 12 - imageWidth : 12;
         </div>
         {showImage && article?._heroImage?.[0] && (
           <div class={`column is-${imageWidth}`}>
-            <figure class='image is-3by2'>
-              <AposArea 
-                area={article._heroImage}
-                imageOptions={{ 
-                  additionalClasses: 'has-shadow object-fit-cover',
-                  sizes: `(max-width: 768px) 100vw, ${imageWidth/12 * 100}vw`
-                }}
-              />
-            </figure>
+            {article?._heroImage?.[0] && (
+              <figure class='image is-3by2'>
+                <img
+                  class='has-shadow object-fit-cover'
+                  loading='lazy'
+                  decoding='async'
+                  sizes='(max-width: 768px) 100vw, ${imageWidth/12 * 100}vw'
+                  src={article._heroImage[0].attachment._urls.full}
+                  alt={article._heroImage[0].attachment._alt || ''}
+                />
+              </figure>
+            )}
           </div>
         )}
       </div>
