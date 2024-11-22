@@ -2,65 +2,68 @@
 ---
 
 <div class="navbar-item">
-  <button
-    id="theme-toggle"
-    class="button is-ghost p-2"
-    aria-label="Toggle theme"
-  >
-    <span class="icon">
+  <button class="theme-switcher button is-ghost p-2" aria-label="Toggle theme">
+    <span class={`icon has-text-${Astro.props.iconColor || 'current'}`}>
       <i class="fa-solid fa-sun" aria-hidden="true"></i>
     </span>
   </button>
 </div>
 
 <script>
-  function initializeThemeSwitcher() {
-    const themeToggle = document.getElementById('theme-toggle');
-    const icon = themeToggle?.querySelector('i');
+class ThemeSwitcher {
+  constructor() {
+    this.htmlElement = document.documentElement;
+    this.init();
+  }
 
-    function updateIcon(isDark: boolean) {
-      if (!icon) return;
-      if (isDark) {
-        icon.classList.remove('fa-sun');
-        icon.classList.add('fa-moon');
-      } else {
-        icon.classList.remove('fa-moon');
-        icon.classList.add('fa-sun');
-      }
-    }
+  init() {
+    // Initialize all theme switcher buttons
+    const buttons = document.querySelectorAll('.theme-switcher');
+    buttons.forEach(button => {
+      this.setupButton(button);
+      this.updateIcon(button.querySelector('i'), this.isDarkTheme());
+    });
+  }
 
-    // Initial state
-    const htmlElement = document.documentElement;
-    const currentTheme = htmlElement.classList.contains('theme-dark') ? 'dark' : 'light';
-    htmlElement.classList.add(`theme-${currentTheme}`);
-    updateIcon(currentTheme === 'dark');
+  setupButton(button) {
+    button.addEventListener('click', () => this.toggleTheme(button));
+  }
 
-    // Remove any existing event listeners
-    themeToggle?.removeEventListener('click', handleThemeToggle);
+  toggleTheme(button) {
+    const isDark = this.isDarkTheme();
+    this.setTheme(!isDark);
     
-    // Add new event listener
-    themeToggle?.addEventListener('click', handleThemeToggle);
-
-    function handleThemeToggle() {
-      const isDark = htmlElement.classList.contains('theme-dark');
-      
-      if (isDark) {
-        htmlElement.classList.remove('theme-dark');
-        htmlElement.classList.add('theme-light');
-      } else {
-        htmlElement.classList.remove('theme-light');
-        htmlElement.classList.add('theme-dark');
-      }
-      
-      updateIcon(!isDark);
-    }
+    // Update all icons when theme changes
+    document.querySelectorAll('.theme-switcher i').forEach(icon => {
+      this.updateIcon(icon, !isDark);
+    });
   }
 
-  // Initialize on load
-  document.addEventListener('DOMContentLoaded', initializeThemeSwitcher);
-
-  // Reinitialize on ApostropheCMS refresh
-  if (window.apos) {
-    apos.bus.$on('refreshed', initializeThemeSwitcher);
+  isDarkTheme() {
+    return this.htmlElement.classList.contains('theme-dark');
   }
+
+  setTheme(isDark) {
+    this.htmlElement.classList.remove(`theme-${isDark ? 'light' : 'dark'}`);
+    this.htmlElement.classList.add(`theme-${isDark ? 'dark' : 'light'}`);
+  }
+
+  updateIcon(icon, isDark) {
+    if (!icon) return;
+    icon.classList.remove(isDark ? 'fa-sun' : 'fa-moon');
+    icon.classList.add(isDark ? 'fa-moon' : 'fa-sun');
+  }
+}
+
+// Initialize on DOM load
+document.addEventListener('DOMContentLoaded', () => {
+  const themeSwitcher = new ThemeSwitcher();
+});
+
+// Support ApostropheCMS refresh
+if (window.apos) {
+  apos.bus.$on('refreshed', () => {
+    const themeSwitcher = new ThemeSwitcher();
+  });
+}
 </script>

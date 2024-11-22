@@ -48,7 +48,14 @@ export function useSiteConfig(globalData) {
     const classes = ['navbar-item'];
 
     if (headerGroup.dropdownTextColor) {
-      classes.push(`has-text-${headerGroup.headerTextColor}`);
+      classes.push(`has-text-${headerGroup.dropdownTextColor}`);
+    }
+
+    if (headerGroup.headerBackgroundColor) {
+      classes.push(`has-background-${headerGroup.headerBackgroundColor}`);
+      if (headerGroup.headerBackgroundModifier) {
+        classes.push(headerGroup.headerBackgroundModifier);
+      }
     }
 
     if (isActive) {
@@ -76,6 +83,13 @@ export function useSiteConfig(globalData) {
     const classes = ['navbar-dropdown'];
     if (headerGroup.dropdownTextColor) {
       classes.push(`has-text-${headerGroup.dropdownTextColor}`);
+    }
+
+    if (headerGroup.headerBackgroundColor) {
+      classes.push(`has-background-${headerGroup.headerBackgroundColor}`);
+      if (headerGroup.headerBackgroundModifier) {
+        classes.push(headerGroup.headerBackgroundModifier);
+      }
     }
 
     return classes.join(' ');
