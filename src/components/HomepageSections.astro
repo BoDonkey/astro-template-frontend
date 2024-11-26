@@ -1,0 +1,67 @@
+---
+import FloatingCards from '../layouts/homepage-layouts/FloatingCards.astro';
+import Testimonials from '../layouts/homepage-layouts/Testimonials.astro';
+import ContentGrid from '../layouts/homepage-layouts/ContentGrid.astro';
+import AposArea from '@apostrophecms/apostrophe-astro/components/AposArea.astro';
+
+const { data: sections } = Astro.props;
+
+/**
+ * Configuration object that defines the available section types and their properties.
+ * Each section type has:
+ * - component: The Astro component to render
+ * - getContent: Function to extract the correct data structure from the section
+ */
+const SECTION_TYPES = {
+  flcards: {
+    Component: FloatingCards,
+    getContent: (section) => section.floatingCardsSection
+  },
+  testimonials: {
+    Component: Testimonials,
+    getContent: (section) => section.testimonialsSection
+  },
+  contentGrid: {
+    Component: ContentGrid,
+    getContent: (section) => section.contentGridSection
+  },
+  area: {
+    Component: AposArea,
+    getContent: (section) => section.areaSection,
+    propName: 'area'
+  }
+};
+
+/**
+ * Extracts and processes the data for a given section.
+ * If the section is empty, returns default data from defaultSections.
+ */
+const getSectionData = (section) => {
+  const sectionConfig = SECTION_TYPES[section.sectionType];
+  if (!sectionConfig) return null;
+
+  const sectionContent = sectionConfig.getContent(section);
+
+  return sectionContent;
+};
+
+// Check if we should render any sections
+const shouldRenderSections = Array.isArray(sections) && sections.length > 0;
+---
+
+{shouldRenderSections && (
+  <div class="homepage-sections">
+    {sections.map((section) => {
+      const sectionConfig = SECTION_TYPES[section.sectionType];
+      if (!sectionConfig) {
+        return null;
+      }
+
+      const sectionData = getSectionData(section);
+      const { Component, propName = 'data' } = sectionConfig;
+
+      const props = { [propName]: sectionData };
+      return <Component {...props} />;
+    })}
+  </div>
+)}

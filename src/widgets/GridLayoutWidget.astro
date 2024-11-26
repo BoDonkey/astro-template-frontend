@@ -5,7 +5,6 @@ import AposArea from '@apostrophecms/apostrophe-astro/components/AposArea.astro'
 
 // Helper to get content areas based on layout type
 const getLayoutAreas = (widget) => {
-  // Existing switch statement remains the same
   switch (widget.layoutType) {
     case 'asideMainThree':
       return [
@@ -477,65 +476,42 @@ const getLayoutAreas = (widget) => {
 // Get layout configuration
 const getLayoutConfig = (widget) => {
   const presetConfigs = {
-    // Existing layouts
-    asideMainThree: { rows: 3, columns: 12, gap: '1rem' },
-    mainAsideThree: { rows: 3, columns: 12, gap: '1rem' },
-    asideTwoMain: { rows: 4, columns: 12, gap: '1rem' },
-    twoMainAside: { rows: 4, columns: 12, gap: '1rem' },
-    headerTwoColFooter: { rows: 3, columns: 12, gap: '1rem' },
-    featuredThreeGrid: { rows: 2, columns: 12, gap: '1rem' },
-
-    // New layouts
-    magazineLayout: {
-      rows: 3,
-      columns: 12,
-      gap: '1.5rem' // Larger gap for magazine-style spacing
-    },
-
-    contentHub: {
-      rows: 5,
-      columns: 12,
-      gap: '2rem' // Larger gap for content sections
-    },
-
-    galleryMasonry: {
-      rows: 3,
-      columns: 12,
-      gap: '1rem' // Standard gap for gallery items
-    },
-
-    dashboardLayout: {
-      rows: 2,
-      columns: 12,
-      gap: '1.5rem' // Comfortable spacing for dashboard elements
-    },
-
-    productShowcase: {
-      rows: 3,
-      columns: 12,
-      gap: '2rem' // Larger gap to separate product sections
-    }
+    asideMainThree: { rows: 3 },
+    mainAsideThree: { rows: 3 },
+    asideTwoMain: { rows: 4 },
+    twoMainAside: { rows: 4 },
+    headerTwoColFooter: { rows: 3 },
+    featuredThreeGrid: { rows: 2 },
+    magazineLayout: { rows: 3, gap: '1.5rem' },
+    contentHub: { rows: 5, gap: '2rem' },
+    galleryMasonry: { rows: 3 },
+    dashboardLayout: { rows: 2, gap: '1.5rem' },
+    productShowcase: { rows: 3, gap: '2rem' }
   };
 
-  const config =
-    widget.layoutType === 'custom'
-      ? {
-          rows: widget.customGrid.rows,
-          columns: widget.customGrid.columns,
-          gap: widget.customGrid.gap,
-          padding: widget.customGrid.padding,
-          margin: widget.customGrid.margin
-        }
-      : {
-          ...presetConfigs[widget.layoutType],
-          padding: '1rem',
-          margin: 'auto'
-        };
-
-  return {
-    ...config,
+  const defaultConfig = {
+    columns: 12,
+    gap: '1rem',
+    padding: '1rem',
+    margin: 'auto',
     mobileGap: '0.5rem',
     mobilePadding: '0.5rem'
+  };
+
+  if (widget.layoutType === 'custom') {
+    return {
+      ...defaultConfig,
+      rows: widget.customGrid.rows,
+      columns: widget.customGrid.columns,
+      gap: widget.customGrid.gap,
+      padding: widget.customGrid.padding,
+      margin: widget.customGrid.margin
+    };
+  }
+
+  return {
+    ...defaultConfig,
+    ...(presetConfigs[widget.layoutType] || { rows: 1 })
   };
 };
 
