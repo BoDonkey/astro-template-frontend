@@ -1,0 +1,98 @@
+---
+const {
+  topTitle,
+  mainTitle,
+  topBackgroundColor,
+  bottomBackgroundColor,
+  features,
+  columns
+} = Astro.props.data;
+
+const getBulmaClass = (prefix, color) => color ? `${prefix}-${color}` : '';
+
+const getImageWithFallback = (imageRelationship, useFallback, fallbackUrl) => {
+  if (!useFallback) return null;
+  if (!Array.isArray(imageRelationship) || !imageRelationship.length) {
+    return fallbackUrl;
+  }
+  return imageRelationship[0]?.attachment?._urls?.['one-sixth'] || fallbackUrl;
+};
+const processedFeatures = features.map(feature => ({
+  ...feature,
+  iconUrl: getImageWithFallback(
+    feature._icon,
+    feature.addIconImage,
+    `https://picsum.photos/190/350?random=${Math.random()}`
+  )
+}));
+---
+
+<section class="features-container">
+  <div class={`top-section ${getBulmaClass('has-background', topBackgroundColor)}`}>
+    <div class="container">
+      <h2 class="title has-text-centered has-text-white mb-4">
+        {topTitle}
+      </h2>
+      <h1 class="subtitle is-2 has-text-centered has-text-white mb-6">
+        {mainTitle}
+      </h1>
+    </div>
+  </div>
+  
+  <div class={`bottom-section ${getBulmaClass('has-background', bottomBackgroundColor)}`}>
+    <div class="container">
+      <div class="columns is-multiline cards-container">
+        {features.map(feature => (
+          <div class={`column is-${columns || '4'}`}>
+            <div class="card h-100">
+              <div class="card-content has-text-centered">
+                {feature.iconUrl && (
+                  <div class="mb-4">
+                    <figure class="image image-size-is-96 is-inline-block">
+                      <img
+                        src={feature.iconUrl}
+                        alt={feature.title || 'Feature icon'}
+                        class={getBulmaClass('has-text', feature.iconColor)}
+                      />
+                    </figure>
+                  </div>
+                )}
+                <h3 class="title is-4 mb-4">{feature.title}</h3>
+                <p class="subtitle is-6">{feature.description}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.features-container {
+  position: relative;
+}
+
+.top-section {
+  padding: 4rem 0 8rem;
+}
+
+.bottom-section {
+  padding: 8rem 0 4rem;
+  margin-top: -4rem;
+}
+
+.cards-container {
+  margin-top: -8rem;
+}
+
+.card {
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.image-size-is-96 {
+  max-width: 96px;
+  max-height: 96px;
+  object-fit: contain;
+}
+</style>
