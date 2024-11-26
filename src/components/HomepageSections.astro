@@ -3,16 +3,8 @@ import FloatingCards from '../layouts/homepage-layouts/FloatingCards.astro';
 import Testimonials from '../layouts/homepage-layouts/Testimonials.astro';
 import ContentGrid from '../layouts/homepage-layouts/ContentGrid.astro';
 import AposArea from '@apostrophecms/apostrophe-astro/components/AposArea.astro';
-import { defaultSections } from '../lib/default-homepage-sections.js';
-import type { ACTION_ERROR_CODES } from 'astro:actions';
 
 const { data: sections } = Astro.props;
-
-console.log('1. Sections received:', {
-  hasSections: !!sections,
-  sectionsLength: sections?.length,
-  sections: sections
-});
 
 /**
  * Configuration object that defines the available section types and their properties.
@@ -45,26 +37,10 @@ const SECTION_TYPES = {
  * If the section is empty, returns default data from defaultSections.
  */
 const getSectionData = (section) => {
-  console.log('3. Processing section:', {
-    sectionType: section.sectionType,
-    hasConfig: !!SECTION_TYPES[section.sectionType],
-    rawSection: section
-  });
   const sectionConfig = SECTION_TYPES[section.sectionType];
   if (!sectionConfig) return null;
 
   const sectionContent = sectionConfig.getContent(section);
-  console.log('4. Section content:', {
-    isEmpty: !sectionContent || Object.keys(sectionContent).length === 0,
-    content: sectionContent
-  });
-
-  
-  // Return default data if section exists but is empty
-  if (sectionContent && Object.keys(sectionContent).length === 0) {
-    console.log('5. Using default section data for:', section.sectionType, defaultSections[section.sectionType]);
-    return defaultSections[section.sectionType];
-  }
 
   return sectionContent;
 };
@@ -78,10 +54,9 @@ const shouldRenderSections = Array.isArray(sections) && sections.length > 0;
     {sections.map((section) => {
       const sectionConfig = SECTION_TYPES[section.sectionType];
       if (!sectionConfig) {
-        console.log('6. Invalid section type:', section.sectionType);
         return null;
       }
-      
+
       const sectionData = getSectionData(section);
       const { Component, propName = 'data' } = sectionConfig;
 

@@ -1,6 +1,6 @@
 ---
 const { widget } = Astro.props;
-import AposArea from '@apostrophecms/apostrophe-astro/components/AposArea.astro';
+
 const {
   slideDuration = 5000,
   transitionSpeed = 300,
@@ -8,12 +8,16 @@ const {
   showControls = true,
   slides = []
 } = widget;
+
+// Generate unique ID for this slideshow instance
+const slideshowId = `slideshow-${Math.random().toString(36).substr(2, 9)}`;
 ---
 
 <div
   class='slideshow-container'
   data-autoplay={autoplay ? '' : null}
   data-slide-duration={slideDuration}
+  data-slideshow-id={slideshowId}
 >
   <div class='slides'>
     {
@@ -33,9 +37,7 @@ const {
               />
             )}
           </figure>
-          <div
-            class='slide-content'
-          >
+          <div class='slide-content'>
             {slide.slideTitle && (
               <h3 class={`title is-4 has-text-${slide.titleColor || 'white'}`}>
                 {slide.slideTitle}
@@ -124,7 +126,7 @@ const {
     transform: translateX(-50%);
     display: flex;
     gap: 0.5rem;
-    z-index: 10; /* Increased z-index */
+    z-index: 10;
   }
 
   .dot {
@@ -144,80 +146,89 @@ const {
 </style>
 
 <script>
-  let slideshowInitialized = false;
-
-  function initSlideshow() {
-    // Prevent multiple initializations
-    if (slideshowInitialized) {
-      console.log('Slideshow already initialized');
-      return;
+  class Slideshow {
+    constructor(container) {
+      this.container = container;
+      this.slideshowId = container.dataset.slideshowId;
+      this.slides = [...container.querySelectorAll('.slide')];
+      this.dots = [...container.querySelectorAll('.dot')];
+      this.currentIndex = 0;
+      this.autoplayInterval = null;
+      
+      this.init();
     }
 
-    const container = document.querySelector('.slideshow-container');
-    console.log('Container found:', !!container);
-    if (!container) return;
+    init() {
+      if (this.slides.length === 0) return;
 
-    const slides = [...container.querySelectorAll('.slide')];
-    const dots = container.querySelectorAll('.dot');
-    if (slides.length === 0) return;
+      this.dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => this.showSlide(index));
+      });
 
-    let currentIndex = 0;
-    let autoplayInterval = null;
-
-    const showSlide = (index) => {
-      slides.forEach((slide) => (slide.dataset.active = 'false'));
-      dots.forEach((dot) => (dot.dataset.active = 'false'));
-      slides[index].dataset.active = 'true';
-      dots[index]?.setAttribute('data-active', 'true');
-      currentIndex = index;
-    };
-
-    const startAutoplay = () => {
-      if (autoplayInterval) clearInterval(autoplayInterval);
-      const duration = parseInt(container.dataset.slideDuration) || 5000;
-      console.log('Starting autoplay with duration:', duration);
-      console.log('Current index:', currentIndex);
-      autoplayInterval = setInterval(() => {
-        const nextIndex = (currentIndex + 1) % slides.length;
-        console.log('Next index:', nextIndex);
-        showSlide(nextIndex);
-      }, duration);
-      console.log('Autoplay interval:', autoplayInterval);
-    };
-
-    const stopAutoplay = () => {
-      if (autoplayInterval) {
-        clearInterval(autoplayInterval);
-        autoplayInterval = null;
+      if (this.container.hasAttribute('data-autoplay')) {
+        this.startAutoplay();
       }
-    };
-
-    dots.forEach((dot, index) => {
-      dot.addEventListener('click', () => {
-        showSlide(index);
-        if (container.hasAttribute('data-autoplay')) {
-          stopAutoplay();
-          startAutoplay();
-        }
-      });
-    });
-
-    // Start autoplay if enabled
-    if (container.hasAttribute('data-autoplay')) {
-      console.log('Autoplay is enabled');
-      startAutoplay();
     }
 
-    if (window.apos) {
-      apos.bus.$on('refreshed', () => {
-        stopAutoplay();
-        slideshowInitialized = false;
-        initSlideshow();
-      });
+    showSlide(index) {
+      this.slides.forEach(slide => slide.dataset.active = 'false');
+      this.dots.forEach(dot => dot.dataset.active = 'false');
+      
+      this.slides[index].dataset.active = 'true';
+      this.dots[index]?.setAttribute('data-active', 'true');
+      this.currentIndex = index;
+
+      if (this.container.hasAttribute('data-autoplay')) {
+        this.stopAutoplay();
+        this.startAutoplay();
+      }
     }
 
-    slideshowInitialized = true;
+    startAutoplay() {
+      this.stopAutoplay();
+      const duration = parseInt(this.container.dataset.slideDuration) || 5000;
+      
+      this.autoplayInterval = setInterval(() => {
+        const nextIndex = (this.currentIndex + 1) % this.slides.length;
+        this.showSlide(nextIndex);
+      }, duration);
+    }
+
+    stopAutoplay() {
+      if (this.autoplayInterval) {
+        clearInterval(this.autoplayInterval);
+        this.autoplayInterval = null;
+      }
+    }
+
+    destroy() {
+      this.stopAutoplay();
+      // Remove event listeners if needed
+    }
   }
 
-  document.addEventListener('DOMContentLoaded', initSlideshow);
+  // Store slideshow instances
+  const slideshows = new Map();
+
+  function initSlideshows() {
+    // Clean up existing instances
+    slideshows.forEach(slideshow => slideshow.destroy());
+    slideshows.clear();
+
+    // Initialize new instances
+    document.querySelectorAll('.slideshow-container').forEach(container => {
+      const slideshowId = container.dataset.slideshowId;
+      if (slideshowId) {
+        slideshows.set(slideshowId, new Slideshow(container));
+      }
+    });
+  }
+
+  // Initialize on page load
+  document.addEventListener('DOMContentLoaded', initSlideshows);
+
+  // Handle ApostropheCMS refreshes
+  if (window.apos) {
+    apos.bus.$on('refreshed', initSlideshows);
+  }
 </script>

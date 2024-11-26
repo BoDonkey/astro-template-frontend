@@ -5,8 +5,17 @@ import AposArea from '@apostrophecms/apostrophe-astro/components/AposArea.astro'
 
 import HomepageSections from '../components/HomepageSections.astro';
 
+import { heroDefaults, slideshowDefaults, sectionDefaults } from '../lib/homepage-defaults';
+
 const { page, user, query, global } = Astro.props.aposData;
 const { layout = 'foundation', heroSection = {}, showcaseSlideshow = {}, addPageSections = false, additionalSectionsContent = {}, main = {} } = page;
+
+// Use default data if no data is provided
+const heroData = heroSection?.mainContent?.title ? heroSection : heroDefaults;
+const slideshowData = showcaseSlideshow?.slides?.length ? showcaseSlideshow : slideshowDefaults;
+const sectionsData = additionalSectionsContent?.length ? additionalSectionsContent : sectionDefaults;
+
+const shouldShowSections = addPageSections || sectionsData.length > 0;
 
 // Helper for layout-specific classes
 const getLayoutClasses = (layout) => {
@@ -24,24 +33,24 @@ const getLayoutClasses = (layout) => {
   {/* Foundation Layout */}
   {layout === 'foundation' && (
     <>
-      {heroSection && <Hero widget={heroSection} />}
+      {heroData && <Hero widget={heroData} />}
     </>
   )}
 
   {/* Showcase Layout */}
   {layout === 'showcase' && (
     <>
-      {showcaseSlideshow && (
-        <div class="showcase-slideshow mb-5">
-          <Slideshow widget={showcaseSlideshow} />
+      {slideshowData && (
+        <div class="showcase-slideshow">
+          <Slideshow widget={slideshowData} />
         </div>
       )}
     </>
   )}
 
   {/* Additional Sections */}
-  {addPageSections && (
-    <HomepageSections data={additionalSectionsContent} />
+  {shouldShowSections && (
+    <HomepageSections data={sectionsData} />
   )}
 
     {/* Main Content Area */}

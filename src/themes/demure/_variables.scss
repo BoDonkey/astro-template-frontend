@@ -3,12 +3,12 @@
 $demure-theme: theme-engine.register-bulma-theme(
   "demure",
   ( // Muted, pastel colors
-    "Primary": hsl(270, 30%, 75%),       // Soft Lavender
-    "Link": hsl(217, 50%, 60%),          // Muted Blue
-    "Info": hsl(200, 50%, 70%),          // Powder Blue
-    "Success": hsl(120, 40%, 70%),       // Soft Green
-    "Warning": hsl(48, 40%, 80%),        // Pale Gold
-    "Danger": hsl(348, 50%, 70%),        // Rosy Pink
+    "primary": hsl(270, 30%, 75%),       // Soft Lavender
+    "link": hsl(217, 50%, 60%),          // Muted Blue
+    "info": hsl(200, 50%, 70%),          // Powder Blue
+    "success": hsl(120, 40%, 70%),       // Soft Green
+    "warning": hsl(48, 40%, 80%),        // Pale Gold
+    "danger": hsl(348, 50%, 70%),        // Rosy Pink
     "text": hsl(30, 5%, 29%),          // Warm gray
     "text-strong": hsl(30, 8%, 24%),   // Darker warm gray
     "text-light": hsl(30, 3%, 41%)     // Light warm gray

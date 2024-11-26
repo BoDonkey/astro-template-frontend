@@ -3,15 +3,15 @@
 $bold-theme: theme-engine.register-bulma-theme(
   "bold",
   ( // High contrast, vibrant colors
-  "Primary": hsl(0, 100%, 50%),         // Bright Red
-  "Link": hsl(217, 71%, 53%),          // Vibrant Blue
-  "Info": hsl(200, 100%, 50%),         // Bright Cyan
-  "Success": hsl(120, 100%, 40%),      // Bright Green
-  "Warning": hsl(48, 100%, 55%),       // Bright Yellow
-  "Danger": hsl(14, 100%, 50%),        // Bright Orange-Red
-  "Text": hsl(0, 0%, 15%),             // Deep Gray
-  "TextStrong": hsl(0, 0%, 4%),        // Very Dark Gray (almost Black)
-  "TextLight": hsl(0, 0%, 75%)         // Light Gray
+  "primary": hsl(0, 100%, 50%),         // Bright Red
+  "link": hsl(217, 71%, 53%),          // Vibrant Blue
+  "info": hsl(200, 100%, 50%),         // Bright Cyan
+  "success": hsl(120, 100%, 40%),      // Bright Green
+  "warning": hsl(48, 100%, 55%),       // Bright Yellow
+  "danger": hsl(14, 100%, 50%),        // Bright Orange-Red
+  "text": hsl(0, 0%, 15%),             // Deep Gray
+  "textStrong": hsl(0, 0%, 4%),        // Very Dark Gray (almost Black)
+  "textLight": hsl(0, 0%, 75%)         // Light Gray
   ),
   (
     "family-primary": "'Space Grotesk', sans-serif",

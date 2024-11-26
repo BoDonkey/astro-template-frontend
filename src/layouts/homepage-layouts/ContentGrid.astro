@@ -1,27 +1,30 @@
 ---
 const {
-  sectionTitle,
-  sectionSubtitle,
+  contentTitle,
+  contentSubtitle,
   backgroundColor,
   gridItems
 } = Astro.props.data;
 
 const getBulmaClass = (prefix, color) => color ? `${prefix}-${color}` : '';
 
-const getImageWithFallback = (imageRelationship, useFallback, fallbackUrl) => {
-  if (!useFallback) return null;
-  if (!Array.isArray(imageRelationship) || !imageRelationship.length) {
-    return fallbackUrl;
+const getImageWithFallback = (imageRelationship, fallbackUrl) => {
+  // If we have a valid image relationship, use it
+  if (Array.isArray(imageRelationship) && 
+      imageRelationship.length > 0 && 
+      imageRelationship[0]?.attachment?._urls?.['full']) {
+    return imageRelationship[0].attachment._urls['full'];
   }
-  return imageRelationship[0]?.attachment?._urls?.['one-sixth'] || fallbackUrl;
+  
+  // Otherwise use the fallback
+  return fallbackUrl;
 };
 
-// Process grid items
+// And when calling it, we can remove the addImage parameter:
 const processedGridItems = gridItems.map((item) => ({
   ...item,
   imageUrl: getImageWithFallback(
     item._image,
-    item.addImage,
     `https://picsum.photos/600/400?random=${Math.random()}`
   )
 }));
@@ -29,20 +32,20 @@ const processedGridItems = gridItems.map((item) => ({
 
 <section class={`section py-6 ${getBulmaClass('has-background', backgroundColor)}`}>
   <div class="container">
-    {sectionTitle && (
-      <h2 class="title has-text-centered mb-3">{sectionTitle}</h2>
+    {contentTitle && (
+      <h2 class="title has-text-centered mb-3">{contentTitle}</h2>
     )}
-    {sectionSubtitle && (
-      <p class="subtitle has-text-centered mb-6">{sectionSubtitle}</p>
+    {contentSubtitle && (
+      <p class="subtitle has-text-centered mb-6">{contentSubtitle}</p>
     )}
 
     <div class="content-blocks">
       {processedGridItems.map((item, index) => (
-        <div class="columns is-vcentered my-6">
-          {/* Image Column */}
-          <div class={`column is-6 ${
-            item.imagePosition === 'right' ? 'is-order-2' : ''
+        <div class={`columns is-vcentered my-6 ${
+            item.imagePosition === 'right' ? 'is-flex-direction-row-reverse' : ''
           }`}>
+          {/* Image Column */}
+          <div class="column is-6">
             {item.imageUrl && (
               <figure class="image">
                 <img
@@ -55,15 +58,13 @@ const processedGridItems = gridItems.map((item) => ({
           </div>
 
           {/* Content Column */}
-          <div class={`column is-5 is-offset-1 ${
-            item.imagePosition === 'right' ? 'is-order-1' : ''
-          }`}>
+          <div class="column is-5 is-offset-1" >
             <h3 class="title is-3 mb-4">{item.blockTitle}</h3>
             <div class="content mb-5">
               {item.data}
             </div>
             {item.ctaText && item.ctaUrl && (
-              <a 
+              <a
                 href={item.ctaUrl} 
                 class={`button ${getBulmaClass('is', item.ctaColor)} is-medium`}
               >
