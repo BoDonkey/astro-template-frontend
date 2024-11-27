@@ -47,8 +47,6 @@ const {
     align-items: center;
   }
 
-  
-
   .accordion-header::after {
     content: '+';
     margin-left: auto;
@@ -81,16 +79,16 @@ function initializeAccordion() {
   accordionContainers.forEach((accordionContainer) => {
     const allowMultipleOpen = accordionContainer.dataset.allowMultiple === 'true';
     const detailsElements = accordionContainer.querySelectorAll('details');
-    
+
     detailsElements.forEach((detailsElement) => {
       const summaryElement = detailsElement.querySelector('summary');
-      
+
       summaryElement.addEventListener('click', (event) => {
         event.preventDefault();
         event.stopPropagation();
-        
+
         const wasOpen = detailsElement.open;
-        
+
         if (!allowMultipleOpen) {
           detailsElements.forEach((otherDetailsElement) => {
             if (otherDetailsElement !== detailsElement) {
@@ -98,7 +96,7 @@ function initializeAccordion() {
             }
           });
         }
-        
+
         // Force a reflow
         void detailsElement.offsetHeight;
         detailsElement.open = !wasOpen;
@@ -113,11 +111,11 @@ const observer = new MutationObserver((mutations) => {
   const hasRelevantChanges = mutations.some(mutation => 
     Array.from(mutation.addedNodes).some(node => 
       node.nodeType === 1 && 
-      (node.classList?.contains('accordion-widget') || 
-       node.querySelector?.('.accordion-widget'))
+      (node.classList?.contains('accordion-widget') |
+      node.querySelector?.('.accordion-widget'))
     )
   );
-  
+
   if (hasRelevantChanges) {
     initializeAccordion();
   }

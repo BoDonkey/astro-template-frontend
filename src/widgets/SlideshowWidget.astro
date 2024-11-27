@@ -154,7 +154,7 @@ const slideshowId = `slideshow-${Math.random().toString(36).substr(2, 9)}`;
       this.dots = [...container.querySelectorAll('.dot')];
       this.currentIndex = 0;
       this.autoplayInterval = null;
-      
+
       this.init();
     }
 
@@ -173,7 +173,7 @@ const slideshowId = `slideshow-${Math.random().toString(36).substr(2, 9)}`;
     showSlide(index) {
       this.slides.forEach(slide => slide.dataset.active = 'false');
       this.dots.forEach(dot => dot.dataset.active = 'false');
-      
+
       this.slides[index].dataset.active = 'true';
       this.dots[index]?.setAttribute('data-active', 'true');
       this.currentIndex = index;
@@ -187,7 +187,7 @@ const slideshowId = `slideshow-${Math.random().toString(36).substr(2, 9)}`;
     startAutoplay() {
       this.stopAutoplay();
       const duration = parseInt(this.container.dataset.slideDuration) || 5000;
-      
+
       this.autoplayInterval = setInterval(() => {
         const nextIndex = (this.currentIndex + 1) % this.slides.length;
         this.showSlide(nextIndex);

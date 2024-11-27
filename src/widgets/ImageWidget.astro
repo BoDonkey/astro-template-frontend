@@ -1,11 +1,4 @@
 ---
-interface ImageOptions {
-  additionalClasses?: string;
-  sizes?: string;
-  loading?: 'lazy' | 'eager';
-  decoding?: 'async' | 'sync' | 'auto';
-}
-
 const { widget, imageOptions = {} } = Astro.props;
 const placeholder = widget?.aposPlaceholder;
 const image = widget?._image[0]?.attachment;
@@ -23,7 +16,7 @@ const classes = ['img-widget', imageOptions.additionalClasses].filter(Boolean).j
   }
 </style>
 
-<img 
+<img
   class={classes}
   src={src}
   alt={alt}
