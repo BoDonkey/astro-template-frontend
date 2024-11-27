@@ -538,14 +538,14 @@ const areaStyles = `
       .custom-layout-widget-${widgetId} .area-${area.name} {
         grid-column: ${area.colStart} / span ${area.colSpan};
         grid-row: ${area.rowStart} / span ${area.rowSpan};
-        
+
         /* Apply min-height if set */
         ${
           widget.layoutType !== 'custom' && widget.areaStyles?.minHeight
             ? `min-height: ${widget.areaStyles.minHeight};`
             : ''
         }
-        
+
         /* Apply vertical alignment if set */
         ${
           widget.layoutType !== 'custom' && widget.areaStyles?.verticalAlign

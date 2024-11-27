@@ -8,7 +8,6 @@ import HeroWidget from './HeroWidget.astro';
 import LinkWidget from './LinkWidget.astro';
 import SlideshowWidget from './SlideshowWidget.astro';
 import RowsWidget from './RowsWidget.astro';
-import PropertySlideshow from './PropertySlideshow.astro';
 
 const widgetComponents = {
   '@apostrophecms/rich-text': RichTextWidget,
@@ -20,8 +19,7 @@ const widgetComponents = {
   'hero': HeroWidget,
   'link': LinkWidget,
   'slideshow': SlideshowWidget,
-  'rows': RowsWidget,
-  'property-slideshow': PropertySlideshow
+  'rows': RowsWidget
 };
 
 export default widgetComponents;
