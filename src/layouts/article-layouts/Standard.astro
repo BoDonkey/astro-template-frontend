@@ -81,3 +81,19 @@ const textWidth = showImage ? 12 - imageWidth : 12;
     </article>
   ))}
 </div>
+<style>
+  /* Add these styles to fix image fitting */
+  .image img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .is-rounded {
+    border-radius: 50%;
+  }
+
+  .has-shadow {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+</style>
