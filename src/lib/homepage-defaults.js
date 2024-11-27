@@ -7,7 +7,8 @@ export const heroDefaults = {
   mainContent: {
     title: 'Welcome to Our Site',
     subtitle: 'Start customizing your homepage',
-    titleColor: 'primary'
+    titleColor: 'primary',
+    subtitleColor: 'primary',
   }
 };
 
@@ -36,7 +37,7 @@ export const slideshowDefaults = {
     {
       slideTitle: 'Customizable Design',
       titleColor: 'white',
-      cardContent: 'Add your own slides with custom colors and content.',
+      cardContent: 'Add your own slides with content.',
       contentColor: 'white',
       _image: [
         {
@@ -75,7 +76,7 @@ export const sectionDefaults = [
       topTitle: "Why Choose Us",
       mainTitle: "Features That Set Us Apart",
       topBackgroundColor: "primary",
-      bottomBackgroundColor: "white",
+      bottomBackgroundColor: "transparent",
       features: [
         {
           title: "Easy Integration",
@@ -100,7 +101,7 @@ export const sectionDefaults = [
     sectionType: 'testimonials',
     testimonialsSection: {
       title: "What Our Clients Say",
-      backgroundColor: "light",
+      backgroundColor: "primary",
       testimonials: [
         {
           quote: "This platform has transformed how we operate. Highly recommended!",
@@ -122,23 +123,36 @@ export const sectionDefaults = [
     contentGridSection: {
       contentTitle: "How It Works",
       contentSubtitle: "Discover our simple process",
-      backgroundColor: "white",
+      backgroundColor: "transparent",
+      contentBlockSpacing: "compact",
+      sectionMargin: "normal",
+      backgroundColor: 'primary',
       gridItems: [
         {
           imagePosition: "left",
           blockTitle: "Simple Setup",
-          content: "Get started in minutes with our intuitive platform.",
-          ctaText: "Learn More",
-          ctaUrl: "#",
-          ctaColor: "primary"
+          linkText: "Learn More",
+          linkType: "custom",
+          linkUrl: "#",
+          linkStyle: "button",
+          buttonStyle: "solid",
+          addIcon: true,
+          icon: "arrow-left",
+          iconPosition: "left",
+          buttonColor: "primary"
         },
         {
           imagePosition: "right",
           blockTitle: "Powerful Features",
-          content: "Access all the tools you need to succeed.",
-          ctaText: "See Features",
-          ctaUrl: "#",
-          ctaColor: "info"
+          linkText: "See Features",
+          linkType: "custom",
+          linkUrl: "#",
+          linkStyle: "button",
+          buttonStyle: "solid",
+          addIcon: true,
+          icon: "arrow-right",
+          iconPosition: "right",
+          buttonColor: "primary"
         }
       ]
     }

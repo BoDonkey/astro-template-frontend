@@ -2,7 +2,8 @@
 const {
   sectionTitle,
   backgroundColor,
-  testimonials
+  testimonials,
+  bgStyle = 'auto' // New prop to control background style
 } = Astro.props.data;
 
 const getBulmaClass = (prefix, color) => color ? `${prefix}-${color}` : '';
@@ -35,7 +36,7 @@ const processedTestimonials = testimonials.map(item => ({
     <div class="columns is-variable is-8">
       {processedTestimonials.map(item => (
         <div class="column">
-          <div class="testimonial-bg"></div>
+          <div class={`testimonial-bg ${bgStyle}`}></div>
           <div class="card testimonial-card">
             <div class="avatar-container">
               {item.avatarUrl && (
@@ -74,10 +75,27 @@ const processedTestimonials = testimonials.map(item => ({
 .testimonial-bg {
   position: absolute;
   inset: -1rem;
-  background: linear-gradient(to right, rgba(0,0,0,0.03), rgba(0,0,0,0.02));
   border-radius: 0.75rem;
-  transform: rotate(-1deg);
   z-index: 0;
+  animation: sway 10s ease-in-out infinite;
+}
+
+/* Different background styles */
+.testimonial-bg.auto {
+  background: linear-gradient(to right, rgba(0,0,0,0.03), rgba(0,0,0,0.02));
+}
+
+.testimonial-bg.light {
+  background: linear-gradient(to right, rgba(255,255,255,0.4), rgba(255,255,255,0.3));
+}
+
+.testimonial-bg.dark {
+  background: linear-gradient(to right, rgba(0,0,0,0.1), rgba(0,0,0,0.08));
+}
+
+@keyframes sway {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(2deg); }
 }
 
 .avatar-container {
@@ -124,6 +142,10 @@ blockquote {
 
 .author-info {
   margin-top: 1rem;
+}
+
+:global(.theme-dark) .testimonial-bg.auto {
+  background: linear-gradient(to right, rgba(255,255,255,0.4), rgba(255,255,255,0.3));
 }
 
 /* Responsive adjustments */
