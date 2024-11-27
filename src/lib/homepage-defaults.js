@@ -5,7 +5,7 @@ export const heroDefaults = {
   height: 'large',
   contentAlignment: 'left',
   mainContent: {
-    title: 'Welcome to Our Site',
+    title: 'Welcome to Your Site',
     subtitle: 'Start customizing your homepage',
     titleColor: 'primary',
     subtitleColor: 'primary',
@@ -125,7 +125,7 @@ export const sectionDefaults = [
       contentSubtitle: "Discover our simple process",
       backgroundColor: "transparent",
       contentBlockSpacing: "compact",
-      sectionMargin: "normal",
+      sectionMargin: "wide",
       backgroundColor: 'primary',
       gridItems: [
         {
@@ -139,7 +139,7 @@ export const sectionDefaults = [
           addIcon: true,
           icon: "arrow-left",
           iconPosition: "left",
-          buttonColor: "primary"
+          buttonColor: "link"
         },
         {
           imagePosition: "right",
@@ -152,7 +152,7 @@ export const sectionDefaults = [
           addIcon: true,
           icon: "arrow-right",
           iconPosition: "right",
-          buttonColor: "primary"
+          buttonColor: "link"
         }
       ]
     }

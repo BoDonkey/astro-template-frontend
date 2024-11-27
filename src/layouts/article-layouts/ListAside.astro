@@ -1,12 +1,4 @@
 ---
-interface Props {
-  pieces: any[];
-  showRelated?: boolean;
-  sidebarWidth?: 3 | 4 | 5;  // Bulma column sizes
-  showAuthorAvatar?: boolean;
-  sidebarArea?: any;
-}
-
 import AposArea from '@apostrophecms/apostrophe-astro/components/AposArea.astro';
 
 const {
@@ -120,7 +112,6 @@ const mainWidth = 12 - sidebarWidth;
   </div>
 </div>
 <style>
-  /* Add these styles to fix image fitting */
   .image img {
     object-fit: cover;
     width: 100%;

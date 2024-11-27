@@ -9,13 +9,16 @@ import { heroDefaults, slideshowDefaults, sectionDefaults } from '../lib/homepag
 
 const { page, user, query, global } = Astro.props.aposData;
 const { layout = 'foundation', heroSection = {}, showcaseSlideshow = {}, addPageSections = false, additionalSectionsContent = {}, main = {} } = page;
+console.log('add page sections', addPageSections);
 
 // Use default data if no data is provided
 const heroData = heroSection?.mainContent?.title ? heroSection : heroDefaults;
 const slideshowData = showcaseSlideshow?.slides?.length ? showcaseSlideshow : slideshowDefaults;
-const sectionsData = additionalSectionsContent?.length ? additionalSectionsContent : sectionDefaults;
+const sectionsData = addPageSections
+  ? (additionalSectionsContent?.length ? additionalSectionsContent : sectionDefaults)
+  : {};
 
-const shouldShowSections = addPageSections || sectionsData.length > 0;
+const shouldShowSections = addPageSections && sectionsData.length > 0;
 
 ---
 <div class="main-content astro-hp-content">
