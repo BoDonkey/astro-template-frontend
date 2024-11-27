@@ -97,23 +97,23 @@ const alignmentClass =
     right: 'has-text-right'
   }[contentAlignment] || 'has-text-centered';
 
-const pretitleClass = getBulmaColorClass(
+  const pretitleClass = `is-size-6-mobile is-size-6-tablet is-size-6-desktop ${getBulmaColorClass(
   mainContent?.pretitleColor,
   'text',
   mainContent?.pretitleModifier
-);
+)}`;
 
-const titleClass = getBulmaColorClass(
+const titleClass = `is-size-5-mobile is-size-1-tablet is-size-1-desktop ${getBulmaColorClass(
   mainContent?.titleColor,
   'text',
   mainContent?.titleModifier
-);
+)}`;
 
-const subtitleClass = getBulmaColorClass(
+const subtitleClass = `is-size-5-mobile is-size-3-tablet is-size-3-desktop ${getBulmaColorClass(
   mainContent?.subtitleColor,
   'text',
   mainContent?.subtitleModifier
-);
+)}`;
 ---
 
 {
@@ -144,20 +144,20 @@ const subtitleClass = getBulmaColorClass(
 
       {/* Content */}
       <div class='hero-body'>
-        <div class={`container ${alignmentClass}`}>
+        <div class={`container px-4 ${alignmentClass}`}>
           {mainContent?.pretitle && (
-            <p class={`subtitle is-6 ${pretitleClass}`}>
+            <p class={`subtitle mb-3 ${pretitleClass}`}>
               {mainContent.pretitle}
             </p>
           )}
-          <h1 class={`title is-1 ${titleClass}`}>{mainContent.title}</h1>
+          <h1 class={`title mb-4 ${titleClass}`}>{mainContent.title}</h1>
           {mainContent?.subtitle && (
-            <p class={`subtitle is-3 ${subtitleClass}`}>
+            <p class={`subtitle mb-5 ${subtitleClass}`}>
               {mainContent.subtitle}
             </p>
           )}
           {callToAction && (
-            <div class='mt-5'>
+            <div class='mt-4 mt-5-desktop'>
               <AposArea area={callToAction} />
             </div>
           )}
@@ -170,20 +170,20 @@ const subtitleClass = getBulmaColorClass(
         class={`split-content ${alignmentClass}`}
         style={splitSide === 'right' ? 'order: 2' : ''}
       >
-        <div class='container'>
+        <div class='container px-4'>
           {mainContent?.pretitle && (
-            <p class={`subtitle is-6 ${pretitleClass}`}>
+            <p class={`subtitle mb-3 ${pretitleClass}`}>
               {mainContent.pretitle}
             </p>
           )}
-          <h1 class={`title is-1 ${titleClass}`}>{mainContent.title}</h1>
+          <h1 class={`title mb-4 ${titleClass}`}>{mainContent.title}</h1>
           {mainContent?.subtitle && (
-            <p class={`subtitle is-3 ${subtitleClass}`}>
+            <p class={`subtitle mb-5 ${subtitleClass}`}>
               {mainContent.subtitle}
             </p>
           )}
           {callToAction && (
-            <div class='mt-5'>
+            <div class='mt-4 mt-5-desktop'>
               <AposArea area={callToAction} />
             </div>
           )}
@@ -285,7 +285,7 @@ const subtitleClass = getBulmaColorClass(
 
   .hero-split {
     display: flex;
-    min-height: 600px; /* or use heightClass values */
+    min-height: 600px;
     width: 100%;
   }
 
@@ -328,5 +328,17 @@ const subtitleClass = getBulmaColorClass(
     height: 100%;
     background-color: var(--overlayBackground);
     z-index: 2;
+  }
+
+  @media screen and (max-width: 768px) {
+    .split-content {
+      padding: 2rem 1rem;
+    }
+  }
+
+  @media screen and (min-width: 769px) {
+    .split-content {
+      padding: 3rem 2rem;
+    }
   }
 </style>

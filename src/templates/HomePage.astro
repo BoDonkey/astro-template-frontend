@@ -17,19 +17,8 @@ const sectionsData = additionalSectionsContent?.length ? additionalSectionsConte
 
 const shouldShowSections = addPageSections || sectionsData.length > 0;
 
-// Helper for layout-specific classes
-const getLayoutClasses = (layout) => {
-  const baseClasses = 'main-content astro-hp-content';
-  const layoutClasses = {
-    foundation: 'py-6',
-    grid: 'py-5',
-    minimal: 'py-4'
-  };
-  return `${baseClasses} ${layoutClasses[layout] || ''}`;
-};
-
 ---
-<div class={getLayoutClasses(layout)}>
+<div class="main-content astro-hp-content">
   {/* Foundation Layout */}
   {layout === 'foundation' && (
     <>

@@ -1,26 +1,29 @@
 ---
+import LinkWidget from "../../widgets/LinkWidget.astro";
+
 const {
   contentTitle,
   contentSubtitle,
   backgroundColor,
+  textColor,
+  titleColor,
+  subtitleColor,
+  contentBlockSpacing = 'normal',
+  sectionMargin = 'normal',
   gridItems
 } = Astro.props.data;
 
 const getBulmaClass = (prefix, color) => color ? `${prefix}-${color}` : '';
 
 const getImageWithFallback = (imageRelationship, fallbackUrl) => {
-  // If we have a valid image relationship, use it
   if (Array.isArray(imageRelationship) && 
       imageRelationship.length > 0 && 
       imageRelationship[0]?.attachment?._urls?.['full']) {
     return imageRelationship[0].attachment._urls['full'];
   }
-  
-  // Otherwise use the fallback
   return fallbackUrl;
 };
 
-// And when calling it, we can remove the addImage parameter:
 const processedGridItems = gridItems.map((item) => ({
   ...item,
   imageUrl: getImageWithFallback(
@@ -28,49 +31,64 @@ const processedGridItems = gridItems.map((item) => ({
     `https://picsum.photos/600/400?random=${Math.random()}`
   )
 }));
+
+const getColumnClass = (margin) => {
+  switch(margin) {
+    case 'none': return 'is-12';
+    case 'wide': return 'is-10';
+    case 'normal': return 'is-8';
+    case 'narrow': return 'is-6';
+    default: return '';
+  }
+};
 ---
 
-<section class={`section py-6 ${getBulmaClass('has-background', backgroundColor)}`}>
-  <div class="container">
-    {contentTitle && (
-      <h2 class="title has-text-centered mb-3">{contentTitle}</h2>
-    )}
-    {contentSubtitle && (
-      <p class="subtitle has-text-centered mb-6">{contentSubtitle}</p>
-    )}
+<section class={`section py-0 px-0 content-section ${contentBlockSpacing}`}>
+  <div class="columns is-centered">
+  <div class={`
+    column
+    ${getColumnClass(sectionMargin)}
+    ${getBulmaClass('has-background', backgroundColor)} 
+    px-5 py-5
+  `}>
+    <div class="header-content">
+      {contentTitle && (
+        <h2 class={`title mb-3 ${getBulmaClass('has-text-', titleColor)}`}>
+          {contentTitle}
+        </h2>
+      )}
+      {contentSubtitle && (
+        <p class={`subtitle mb-6 ${getBulmaClass('has-text-', subtitleColor)}`}>
+          {contentSubtitle}
+        </p>
+      )}
+    </div>
 
     <div class="content-blocks">
       {processedGridItems.map((item, index) => (
-        <div class={`columns is-vcentered my-6 ${
-            item.imagePosition === 'right' ? 'is-flex-direction-row-reverse' : ''
-          }`}>
-          {/* Image Column */}
-          <div class="column is-6">
+        <div class={`content-block ${
+          item.imagePosition === 'right' ? 'image-right' : 'image-left'
+        }`}>
+          <div class="block-image">
             {item.imageUrl && (
-              <figure class="image">
+              <figure class="image-container">
                 <img
                   src={item.imageUrl}
                   alt={item.blockTitle || 'Content image'}
-                  class="has-shadow is-rounded"
+                  class="block-img"
                 />
               </figure>
             )}
           </div>
 
-          {/* Content Column */}
-          <div class="column is-5 is-offset-1" >
-            <h3 class="title is-3 mb-4">{item.blockTitle}</h3>
-            <div class="content mb-5">
+          <div class="block-content">
+            <h3 class={`title is-3 mb-4 ${getBulmaClass('has-text-', textColor)}`}>
+              {item.blockTitle}
+            </h3>
+            <div class={`content mb-5 ${getBulmaClass('has-text-', textColor)}`}>
               {item.data}
             </div>
-            {item.ctaText && item.ctaUrl && (
-              <a
-                href={item.ctaUrl} 
-                class={`button ${getBulmaClass('is', item.ctaColor)} is-medium`}
-              >
-                {item.ctaText}
-              </a>
-            )}
+            {item.linkText && <LinkWidget widget={item} />}
           </div>
         </div>
       ))}
@@ -79,17 +97,125 @@ const processedGridItems = gridItems.map((item) => ({
 </section>
 
 <style>
-.has-shadow {
-  box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+.header-content {
+  text-align: center;
+}
+
+.header-content .title,
+.header-content .subtitle {
+  text-align: center;
+}
+
+/* Base styles */
+.content-section {
+  padding: var(--section-padding, 3rem 1.5rem);
 }
 
 .content-blocks {
-  max-width: 1200px;
   margin: 0 auto;
 }
 
-.content {
-  font-size: 1.1rem;
-  line-height: 1.8;
+/* Block spacing variants */
+.content-section.compact {
+  --section-padding: 2rem 1.5rem;
+  --block-spacing: 2rem;
+}
+
+.content-section.normal {
+  --section-padding: 3rem 1.5rem;
+  --block-spacing: 4rem;
+}
+
+.content-section.wide {
+  --section-padding: 4rem 1.5rem;
+  --block-spacing: 6rem;
+}
+
+/* Individual content block styling */
+.content-block {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin: var(--block-spacing) auto;
+  align-items: center;
+}
+
+.image-right {
+  direction: rtl;
+}
+
+.image-right > * {
+  direction: ltr;
+}
+
+.block-image {
+  position: relative;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.image-container {
+  position: relative;
+  margin: 0;
+  padding-top: 75%;
+  overflow: hidden;
+}
+
+.block-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 1rem;
+  transition: transform 0.3s ease;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+}
+
+.block-content {
+  padding: 1rem;
+}
+
+/* Dark theme text color handling */
+:global(.theme-dark) .title:not([class*="has-text-"]),
+:global(.theme-dark) .subtitle:not([class*="has-text-"]),
+:global(.theme-dark) .content-block .content:not([class*="has-text-"]) {
+  color: #fff;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+  .container.margin-narrow,
+  .container.margin-normal,
+  .container.margin-wide {
+    max-width: 90%;
+    width: 90%;
+  }
+
+  .content-block {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .image-container {
+    padding-top: 66.67%;
+  }
+
+  .block-content {
+    padding: 0;
+  }
+
+  .content-section.compact {
+    --block-spacing: 1.5rem;
+  }
+
+  .content-section.normal {
+    --block-spacing: 3rem;
+  }
+
+  .content-section.wide {
+    --block-spacing: 4rem;
+  }
 }
 </style>
