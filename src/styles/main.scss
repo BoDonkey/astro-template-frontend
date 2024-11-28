@@ -56,13 +56,17 @@ body {
     top: 112px;
   }
 
-  &.has-navbar-fixed-top .main-content {
-    padding-top: 34px;
+  &[data-apos-generated].has-navbar-fixed-top .main-content {
+    padding-top: 118px;
   }
 
 
   &.has-navbar-fixed-top .apos-admin-bar-spacer {
     height: 0 !important;
+  }
+
+  &:not(.has-navbar-fixed-top) .navbar {
+    margin-bottom: 0;
   }
 }
 
