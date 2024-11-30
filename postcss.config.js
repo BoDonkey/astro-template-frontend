@@ -6,7 +6,7 @@ export default {
   plugins: [
     postcssViewportToContainerToggle({
         modifierAttr: 'data-breakpoint-preview-mode',
-        debug: false,
+        debug: true,
         transform: null
     })
   ]
