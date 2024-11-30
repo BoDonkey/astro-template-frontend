@@ -4,474 +4,7 @@ const widgetId = widget._id;
 import AposArea from '@apostrophecms/apostrophe-astro/components/AposArea.astro';
 
 // Helper to get content areas based on layout type
-const getLayoutAreas = (widget) => {
-  switch (widget.layoutType) {
-    case 'asideMainThree':
-      return [
-        {
-          name: 'aside',
-          content: widget.asideContent,
-          colStart: 1,
-          colSpan: 4,
-          rowStart: 1,
-          rowSpan: 3,
-          tabletColSpan: 5,
-          mobileColSpan: 12
-        },
-        {
-          name: 'main',
-          content: widget.mainContent,
-          colStart: 5,
-          colSpan: 8,
-          rowStart: 1,
-          rowSpan: 3,
-          tabletColSpan: 7,
-          mobileColSpan: 12
-        }
-      ];
-    case 'mainAsideThree':
-      return [
-        {
-          name: 'main',
-          content: widget.mainContent,
-          colStart: 1,
-          colSpan: 8,
-          rowStart: 1,
-          rowSpan: 3,
-          tabletColSpan: 7,
-          mobileColSpan: 12
-        },
-        {
-          name: 'aside',
-          content: widget.asideContent,
-          colStart: 9,
-          colSpan: 4,
-          rowStart: 1,
-          rowSpan: 3,
-          tabletColSpan: 5,
-          mobileColSpan: 12
-        }
-      ];
-    case 'asideTwoMain':
-      return [
-        {
-          name: 'aside',
-          content: widget.asideLongContent,
-          colStart: 1,
-          colSpan: 4,
-          rowStart: 1,
-          rowSpan: 4,
-          tabletColSpan: 12,
-          mobileColSpan: 12
-        },
-        {
-          name: 'main-top',
-          content: widget.mainTopContent,
-          colStart: 5,
-          colSpan: 8,
-          rowStart: 1,
-          rowSpan: 2,
-          tabletColSpan: 12,
-          mobileColSpan: 12
-        },
-        {
-          name: 'main-bottom',
-          content: widget.mainBottomContent,
-          colStart: 5,
-          colSpan: 8,
-          rowStart: 3,
-          rowSpan: 2,
-          tabletColSpan: 12,
-          mobileColSpan: 12
-        }
-      ];
-    case 'twoMainAside':
-      return [
-        {
-          name: 'main-top',
-          content: widget.mainTopContent,
-          colStart: 1,
-          colSpan: 8,
-          rowStart: 1,
-          rowSpan: 2,
-          tabletColSpan: 12,
-          mobileColSpan: 12
-        },
-        {
-          name: 'main-bottom',
-          content: widget.mainBottomContent,
-          colStart: 1,
-          colSpan: 8,
-          rowStart: 3,
-          rowSpan: 2,
-          tabletColSpan: 12,
-          mobileColSpan: 12
-        },
-        {
-          name: 'aside',
-          content: widget.asideLongContent,
-          colStart: 9,
-          colSpan: 4,
-          rowStart: 1,
-          rowSpan: 4,
-          tabletColSpan: 12,
-          mobileColSpan: 12
-        }
-      ];
-    case 'headerTwoColFooter':
-      return [
-        {
-          name: 'header',
-          content: widget.headerContent,
-          colStart: 1,
-          colSpan: 12,
-          rowStart: 1,
-          rowSpan: 1,
-          tabletColSpan: 12,
-          mobileColSpan: 12
-        },
-        {
-          name: 'left',
-          content: widget.leftColumnContent,
-          colStart: 1,
-          colSpan: 6,
-          rowStart: 2,
-          rowSpan: 1,
-          tabletColSpan: 6,
-          mobileColSpan: 12
-        },
-        {
-          name: 'right',
-          content: widget.rightColumnContent,
-          colStart: 7,
-          colSpan: 6,
-          rowStart: 2,
-          rowSpan: 1,
-          tabletColSpan: 6,
-          mobileColSpan: 12
-        },
-        {
-          name: 'footer',
-          content: widget.footerContent,
-          colStart: 1,
-          colSpan: 12,
-          rowStart: 3,
-          rowSpan: 1,
-          tabletColSpan: 12,
-          mobileColSpan: 12
-        }
-      ];
-    case 'featuredThreeGrid':
-      return [
-        {
-          name: 'featured',
-          content: widget.featuredContent,
-          colStart: 1,
-          colSpan: 12,
-          rowStart: 1,
-          rowSpan: 1,
-          tabletColSpan: 12,
-          mobileColSpan: 12
-        },
-        {
-          name: 'col1',
-          content: widget.columnOneContent,
-          colStart: 1,
-          colSpan: 4,
-          rowStart: 2,
-          rowSpan: 1,
-          tabletColSpan: 6,
-          mobileColSpan: 12
-        },
-        {
-          name: 'col2',
-          content: widget.columnTwoContent,
-          colStart: 5,
-          colSpan: 4,
-          rowStart: 2,
-          rowSpan: 1,
-          tabletColSpan: 6,
-          mobileColSpan: 12
-        },
-        {
-          name: 'col3',
-          content: widget.columnThreeContent,
-          colStart: 9,
-          colSpan: 4,
-          rowStart: 2,
-          rowSpan: 1,
-          tabletColSpan: 12,
-          mobileColSpan: 12
-        }
-      ];
-    case 'magazineLayout':
-      return [
-        {
-          name: 'headline',
-          content: widget.headlineContent,
-          colStart: 1,
-          colSpan: 8,
-          rowStart: 1,
-          rowSpan: 2,
-          tabletColSpan: 8,
-          mobileColSpan: 12
-        },
-        {
-          name: 'sidebar',
-          content: widget.sidebarContent,
-          colStart: 9,
-          colSpan: 4,
-          rowStart: 1,
-          rowSpan: 3,
-          tabletColSpan: 4,
-          mobileColSpan: 12
-        },
-        {
-          name: 'feature1',
-          content: widget.feature1Content,
-          colStart: 1,
-          colSpan: 4,
-          rowStart: 3,
-          rowSpan: 1,
-          tabletColSpan: 4,
-          mobileColSpan: 12
-        },
-        {
-          name: 'feature2',
-          content: widget.feature2Content,
-          colStart: 5,
-          colSpan: 4,
-          rowStart: 3,
-          rowSpan: 1,
-          tabletColSpan: 4,
-          mobileColSpan: 12
-        },
-        {
-          name: 'feature3',
-          content: widget.feature3Content,
-          colStart: 9,
-          colSpan: 4,
-          rowStart: 3,
-          rowSpan: 1,
-          tabletColSpan: 4,
-          mobileColSpan: 12
-        }
-      ];
-
-    case 'contentHub':
-      return [
-        {
-          name: 'hero',
-          content: widget.heroContent,
-          colStart: 1,
-          colSpan: 12,
-          rowStart: 1,
-          rowSpan: 1,
-          tabletColSpan: 12,
-          mobileColSpan: 12
-        },
-        {
-          name: 'featured',
-          content: widget.featuredHubContent,
-          colStart: 1,
-          colSpan: 8,
-          rowStart: 2,
-          rowSpan: 2,
-          tabletColSpan: 8,
-          mobileColSpan: 12
-        },
-        {
-          name: 'quickLinks',
-          content: widget.quickLinksContent,
-          colStart: 9,
-          colSpan: 4,
-          rowStart: 2,
-          rowSpan: 2,
-          tabletColSpan: 4,
-          mobileColSpan: 12
-        },
-        {
-          name: 'section1',
-          content: widget.section1Content,
-          colStart: 1,
-          colSpan: 6,
-          rowStart: 4,
-          rowSpan: 1,
-          tabletColSpan: 6,
-          mobileColSpan: 12
-        },
-        {
-          name: 'section2',
-          content: widget.section2Content,
-          colStart: 7,
-          colSpan: 6,
-          rowStart: 4,
-          rowSpan: 1,
-          tabletColSpan: 6,
-          mobileColSpan: 12
-        },
-        {
-          name: 'fullWidth',
-          content: widget.fullWidthContent,
-          colStart: 1,
-          colSpan: 12,
-          rowStart: 5,
-          rowSpan: 1,
-          tabletColSpan: 12,
-          mobileColSpan: 12
-        }
-      ];
-
-    case 'galleryMasonry':
-      return [
-        {
-          name: 'featured',
-          content: widget.galleryFeaturedContent,
-          colStart: 1,
-          colSpan: 8,
-          rowStart: 1,
-          rowSpan: 2,
-          tabletColSpan: 8,
-          mobileColSpan: 12
-        },
-        {
-          name: 'side1',
-          content: widget.gallerySide1Content,
-          colStart: 9,
-          colSpan: 4,
-          rowStart: 1,
-          rowSpan: 1,
-          tabletColSpan: 4,
-          mobileColSpan: 6
-        },
-        {
-          name: 'side2',
-          content: widget.gallerySide2Content,
-          colStart: 9,
-          colSpan: 4,
-          rowStart: 2,
-          rowSpan: 1,
-          tabletColSpan: 4,
-          mobileColSpan: 6
-        },
-        {
-          name: 'bottom',
-          content: widget.galleryBottomContent,
-          colStart: 1,
-          colSpan: 12,
-          rowStart: 3,
-          rowSpan: 1,
-          tabletColSpan: 12,
-          mobileColSpan: 12
-        }
-      ];
-
-    case 'dashboardLayout':
-      return [
-        {
-          name: 'mainMetric',
-          content: widget.mainMetricContent,
-          colStart: 1,
-          colSpan: 8,
-          rowStart: 1,
-          rowSpan: 1,
-          tabletColSpan: 8,
-          mobileColSpan: 12
-        },
-        {
-          name: 'sideMetrics',
-          content: widget.sideMetricsContent,
-          colStart: 9,
-          colSpan: 4,
-          rowStart: 1,
-          rowSpan: 1,
-          tabletColSpan: 4,
-          mobileColSpan: 12
-        },
-        {
-          name: 'chart',
-          content: widget.chartContent,
-          colStart: 1,
-          colSpan: 6,
-          rowStart: 2,
-          rowSpan: 1,
-          tabletColSpan: 12,
-          mobileColSpan: 12
-        },
-        {
-          name: 'table',
-          content: widget.tableContent,
-          colStart: 7,
-          colSpan: 6,
-          rowStart: 2,
-          rowSpan: 1,
-          tabletColSpan: 12,
-          mobileColSpan: 12
-        }
-      ];
-
-    case 'productShowcase':
-      return [
-        {
-          name: 'mainProduct',
-          content: widget.mainProductContent,
-          colStart: 1,
-          colSpan: 6,
-          rowStart: 1,
-          rowSpan: 2,
-          tabletColSpan: 6,
-          mobileColSpan: 12
-        },
-        {
-          name: 'details',
-          content: widget.productDetailsContent,
-          colStart: 7,
-          colSpan: 6,
-          rowStart: 1,
-          rowSpan: 2,
-          tabletColSpan: 6,
-          mobileColSpan: 12
-        },
-        {
-          name: 'related1',
-          content: widget.related1Content,
-          colStart: 1,
-          colSpan: 4,
-          rowStart: 3,
-          rowSpan: 1,
-          tabletColSpan: 4,
-          mobileColSpan: 12
-        },
-        {
-          name: 'related2',
-          content: widget.related2Content,
-          colStart: 5,
-          colSpan: 4,
-          rowStart: 3,
-          rowSpan: 1,
-          tabletColSpan: 4,
-          mobileColSpan: 12
-        },
-        {
-          name: 'related3',
-          content: widget.related3Content,
-          colStart: 9,
-          colSpan: 4,
-          rowStart: 3,
-          rowSpan: 1,
-          tabletColSpan: 4,
-          mobileColSpan: 12
-        }
-      ];
-    case 'custom':
-    default:
-      return widget.customGrid.contentAreas.map((area) => ({
-        ...area,
-        tabletColSpan: area.tabletColSpan || area.colSpan,
-        mobileColSpan: 12
-      }));
-  }
-};
+import { getLayoutAreas } from '../lib/get-layout-areas.js';
 
 // Get layout configuration
 const getLayoutConfig = (widget) => {
@@ -515,8 +48,9 @@ const getLayoutConfig = (widget) => {
   };
 };
 
-const config = getLayoutConfig(widget);
 const areas = getLayoutAreas(widget);
+const config = getLayoutConfig(widget);
+
 const maxWidth = widget.maxWidth ? widget.maxWidth : '';
 
 const layoutClasses = [
@@ -528,81 +62,32 @@ const layoutClasses = [
 ]
   .filter(Boolean)
   .join(' ');
-
-// Generate area styles with responsive breakpoints
-const areaStyles = `
-  <style>
-    ${areas
-      .map(
-        (area) => `
-      .custom-layout-widget-${widgetId} .area-${area.name} {
-        grid-column: ${area.colStart} / span ${area.colSpan};
-        grid-row: ${area.rowStart} / span ${area.rowSpan};
-
-        /* Apply min-height if set */
-        ${
-          widget.layoutType !== 'custom' && widget.areaStyles?.minHeight
-            ? `min-height: ${widget.areaStyles.minHeight};`
-            : ''
-        }
-
-        /* Apply vertical alignment if set */
-        ${
-          widget.layoutType !== 'custom' && widget.areaStyles?.verticalAlign
-            ? `align-self: ${widget.areaStyles.verticalAlign};`
-            : ''
-        }
-        
-        /* For custom layouts, apply per-area styles */
-        ${
-          widget.layoutType === 'custom' && area.minHeight
-            ? `min-height: ${area.minHeight};`
-            : ''
-        }
-        ${
-          widget.layoutType === 'custom' && area.verticalAlign
-            ? `align-self: ${area.verticalAlign};`
-            : ''
-        }
-      }
-
-      @media (max-width: 1023px) {
-        .custom-layout-widget-${widgetId} .area-${area.name} {
-          grid-column: span ${area.tabletColSpan};
-          grid-row: auto;
-        }
-      }
-
-      @media (max-width: 768px) {
-        .custom-layout-widget-${widgetId} .area-${area.name} {
-          grid-column: span ${area.mobileColSpan};
-        }
-      }
-    `
-      )
-      .join('\n')}
-  </style>
-`;
 ---
-
-<div class='container is-fluid mb-3'>
+<div class="container is-fluid mb-3">
   <div
     id={`custom-layout-widget-${widgetId}`}
     class={layoutClasses}
     data-widget-id={widgetId}
     data-layout-type={widget.layoutType}
   >
-    {
-      areas.map((area) => (
-        <div
-          class={`custom-layout-area area-${area.name} layout-${widget.layoutType}-${area.name}`}
-          data-area-name={area.name}
-        >
-          <AposArea area={area.content} />
-        </div>
-      ))
-    }
-    <Fragment set:html={areaStyles} />
+    {areas.map((area) => (
+      <div
+        class={`custom-layout-area area-${area.name} layout-${widget.layoutType}-${area.name}`}
+        data-area-name={area.name}
+        style={{
+          '--col-start': area.colStart,
+          '--col-span': area.colSpan,
+          '--row-start': area.rowStart,
+          '--row-span': area.rowSpan,
+          '--tablet-col-span': area.tabletColSpan,
+          '--mobile-col-span': area.mobileColSpan,
+          ...(area.minHeight ? { '--min-height': area.minHeight } : {}),
+          ...(area.verticalAlign ? { '--align-self': area.verticalAlign } : {})
+        }}
+      >
+        <AposArea area={area.content} />
+      </div>
+    ))}
   </div>
 </div>
 
@@ -621,29 +106,27 @@ const areaStyles = `
     grid-template-rows: repeat(var(--rows), auto);
     gap: var(--gap);
     padding: var(--padding);
-    margin: var(--margin, auto);
+    margin: var(--margin);
     height: auto;
     place-items: start stretch;
   }
 
-  .max-width-768 {
-    max-width: 768px;
-  }
-  .max-width-960 {
-    max-width: 960px;
-  }
-  .max-width-1152 {
-    max-width: 1152px;
-  }
-  .max-width-1344 {
-    max-width: 1344px;
+  .custom-layout-area {
+    grid-column: var(--col-start) / span var(--col-span);
+    grid-row: var(--row-start) / span var(--row-span);
+    min-height: var(--min-height, auto);
+    align-self: var(--align-self, stretch);
   }
 
   @media (max-width: 1023px) {
     .custom-layout-widget {
       grid-template-columns: repeat(12, 1fr);
-      grid-template-rows: auto;
       gap: calc(var(--gap) * 0.75);
+    }
+
+    .custom-layout-area {
+      grid-column: span var(--tablet-col-span);
+      grid-row: auto;
     }
   }
 
@@ -653,35 +136,36 @@ const areaStyles = `
       gap: calc(var(--gap) * 0.5);
     }
 
-    .custom-layout-widget [class^='area-'] {
-      grid-column: 1;
+    .custom-layout-area {
+      grid-column: span var(--mobile-col-span);
+      grid-row: auto;
     }
   }
 </style>
 <style is:global>
-    /* Layout Preview Styles - Used in widget editor UI */
+  /* Layout Preview Styles - Used in widget editor UI */
+  .layout-preview-container {
+  margin: 0.5rem 0;
+}
+
 .layout-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 0.5rem;
+  gap: 0.2rem;
 }
 
 .layout-card {
   border: 1px solid #ddd;
   border-radius: 4px;
-  padding: 0.5rem;
+  padding: 0.75rem;
   background: white;
 }
 
 .layout-title {
   font-weight: 600;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.5rem;
   color: #333;
-  font-size: 0.8rem;
-}
-
-.layout-preview-container {
-  margin: 0.5rem 0; 
+  font-size: 0.9rem;
 }
 
 .preview-svg {

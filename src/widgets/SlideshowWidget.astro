@@ -146,6 +146,11 @@ const slideshowId = `slideshow-${Math.random().toString(36).substr(2, 9)}`;
 </style>
 
 <script>
+import AposArea from "@apostrophecms/apostrophe-astro/components/AposArea.astro";
+import AposEditLayout from "@apostrophecms/apostrophe-astro/components/layouts/AposEditLayout.astro";
+import AposLayout from "@apostrophecms/apostrophe-astro/components/layouts/AposLayout.astro";
+import AposRefreshLayout from "@apostrophecms/apostrophe-astro/components/layouts/AposRefreshLayout.astro";
+
   class Slideshow {
     constructor(container) {
       this.container = container;
@@ -170,12 +175,23 @@ const slideshowId = `slideshow-${Math.random().toString(36).substr(2, 9)}`;
       }
     }
 
-    showSlide(index) {
-      this.slides.forEach(slide => slide.dataset.active = 'false');
-      this.dots.forEach(dot => dot.dataset.active = 'false');
+    showSlide(index, currentIndex = this.currentIndex) {
+      console.log('showSlide', index, this.slides[index], this.dots[index],this.slides[currentIndex], this.dots[currentIndex]);
+      this.slides.forEach(slide => {
+        slide.setAttribute('data-active', 'false');
+        slide.classList.toggle('active');
+      });
+      this.dots.forEach(dot => {
+        dot.setAttribute('data-active', 'false');
+        dot.classList.toggle('active');
+      });
 
-      this.slides[index].dataset.active = 'true';
-      this.dots[index]?.setAttribute('data-active', 'true');
+      this.slides[index].setAttribute('data-active', 'true');
+      if (this.dots[index]) {
+        this.dots[index].setAttribute('data-active', 'true');
+      }
+      this.dots[index].style.color='green';
+
       this.currentIndex = index;
 
       if (this.container.hasAttribute('data-autoplay')) {
@@ -215,13 +231,16 @@ const slideshowId = `slideshow-${Math.random().toString(36).substr(2, 9)}`;
     slideshows.forEach(slideshow => slideshow.destroy());
     slideshows.clear();
 
-    // Initialize new instances
-    document.querySelectorAll('.slideshow-container').forEach(container => {
-      const slideshowId = container.dataset.slideshowId;
-      if (slideshowId) {
-        slideshows.set(slideshowId, new Slideshow(container));
-      }
-    });
+    // Initialize new instances with a slight delay to allow for apos widget wrapping
+    setTimeout(() => {
+      document.querySelectorAll('.slideshow-container').forEach(container => {
+        console.log('container', container);
+        const slideshowId = container.dataset.slideshowId;
+        if (slideshowId && !apos.isEditing) {
+          slideshows.set(slideshowId, new Slideshow(container));
+        }
+      });
+    }, 500);
   }
 
   // Initialize on page load
