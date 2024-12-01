@@ -9,8 +9,24 @@ const {
   slides = []
 } = widget;
 
-// Generate unique ID for this slideshow instance
 const slideshowId = `slideshow-${Math.random().toString(36).substr(2, 9)}`;
+
+const getBulmaColorClass = (color, type = 'text') => {
+  if (!color) return '';
+
+  switch (type) {
+    case 'text':
+      return `has-text-${color}`;
+    case 'background':
+      return `has-background-${color}`;
+    default:
+      return '';
+  }
+};
+
+const getTextBlockBackground = (color, opacity) => {
+  return `color-mix(in hsl, var(--bulma-${color}) ${opacity}%, transparent)`;
+};
 ---
 
 <div
@@ -21,36 +37,48 @@ const slideshowId = `slideshow-${Math.random().toString(36).substr(2, 9)}`;
 >
   <div class='slides'>
     {
-      slides.map((slide, index) => (
-        <div
-          class='slide'
-          data-slide={index}
-          data-active={index === 0 ? 'true' : 'false'}
-          style={`transition: opacity ${transitionSpeed}ms ease-in-out;`}
-        >
-          <figure class='image is-16by9'>
-            {slide._image?.[0] && (
-              <img
-                src={slide._image[0].attachment._urls['full']}
-                alt={slide._image[0].attachment.alt || slide.slideTitle}
-                loading={index === 0 ? 'eager' : 'lazy'}
-              />
-            )}
-          </figure>
-          <div class='slide-content'>
-            {slide.slideTitle && (
-              <h3 class={`title is-4 has-text-${slide.titleColor || 'white'}`}>
-                {slide.slideTitle}
-              </h3>
-            )}
-            {slide.cardContent && (
-              <div class={`content has-text-${slide.contentColor || 'white'}`}>
-                {slide.cardContent}
+      slides.map((slide, index) => {
+        return (
+          <div
+            class='slide'
+            data-slide={index}
+            data-active={index === 0 ? 'true' : 'false'}
+            style={`transition: opacity ${transitionSpeed}ms ease-in-out;`}
+          >
+            <figure class='image is-16by9'>
+              {slide._image?.[0] && (
+                <img
+                  src={slide._image[0].attachment._urls['full']}
+                  alt={slide._image[0].attachment.alt || slide.slideTitle}
+                  loading={index === 0 ? 'eager' : 'lazy'}
+                />
+              )}
+            </figure>
+            <div class="slide-content-wrapper">
+              <div
+                class={`slide-content`}
+                style={`background-color:${getTextBlockBackground(slide.textBlockBackground || 'black', slide.textBlockOpacity || 70)}
+                `}
+              >
+                {slide.slideTitle && (
+                  <h3
+                    class={`title ${slide.titleSize || 'is-4'} ${getBulmaColorClass(slide.titleColor, 'text')}`}
+                  >
+                    {slide.slideTitle}
+                  </h3>
+                )}
+                {slide.cardContent && (
+                  <div
+                    class={`content ${slide.contentSize || 'is-size-6'} ${getBulmaColorClass(slide.contentColor, 'text')}`}
+                  >
+                    {slide.cardContent}
+                  </div>
+                )}
               </div>
-            )}
+            </div>
           </div>
-        </div>
-      ))
+        );
+      })
     }
   </div>
 
@@ -110,13 +138,22 @@ const slideshowId = `slideshow-${Math.random().toString(36).substr(2, 9)}`;
     object-fit: cover;
   }
 
-  .slide-content {
+  .slide-content-wrapper {
     position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 2rem;
-    background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 75%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .slide-content {
+    display: inline-block;
+    padding: 1.5rem 2rem;
+    border-radius: 0.5rem;
+    max-width: 100%;
+    width: auto;
   }
 
   .slideshow-dots {
@@ -146,11 +183,6 @@ const slideshowId = `slideshow-${Math.random().toString(36).substr(2, 9)}`;
 </style>
 
 <script>
-import AposArea from "@apostrophecms/apostrophe-astro/components/AposArea.astro";
-import AposEditLayout from "@apostrophecms/apostrophe-astro/components/layouts/AposEditLayout.astro";
-import AposLayout from "@apostrophecms/apostrophe-astro/components/layouts/AposLayout.astro";
-import AposRefreshLayout from "@apostrophecms/apostrophe-astro/components/layouts/AposRefreshLayout.astro";
-
   class Slideshow {
     constructor(container) {
       this.container = container;
@@ -159,7 +191,6 @@ import AposRefreshLayout from "@apostrophecms/apostrophe-astro/components/layout
       this.dots = [...container.querySelectorAll('.dot')];
       this.currentIndex = 0;
       this.autoplayInterval = null;
-
       this.init();
     }
 
@@ -176,24 +207,26 @@ import AposRefreshLayout from "@apostrophecms/apostrophe-astro/components/layout
     }
 
     showSlide(index, currentIndex = this.currentIndex) {
-      console.log('showSlide', index, this.slides[index], this.dots[index],this.slides[currentIndex], this.dots[currentIndex]);
-      this.slides.forEach(slide => {
+      // Reset all slides and dots to inactive state
+      this.slides.forEach((slide) => {
         slide.setAttribute('data-active', 'false');
         slide.classList.toggle('active');
       });
-      this.dots.forEach(dot => {
+      this.dots.forEach((dot) => {
         dot.setAttribute('data-active', 'false');
         dot.classList.toggle('active');
       });
 
+      // Activate the selected slide and dot
       this.slides[index].setAttribute('data-active', 'true');
       if (this.dots[index]) {
         this.dots[index].setAttribute('data-active', 'true');
       }
-      this.dots[index].style.color='green';
+      this.dots[index].style.color = 'green';
 
       this.currentIndex = index;
 
+      // Restart autoplay if enabled
       if (this.container.hasAttribute('data-autoplay')) {
         this.stopAutoplay();
         this.startAutoplay();
@@ -219,35 +252,41 @@ import AposRefreshLayout from "@apostrophecms/apostrophe-astro/components/layout
 
     destroy() {
       this.stopAutoplay();
-      // Remove event listeners if needed
     }
   }
 
-  // Store slideshow instances
+  // Store slideshow instances in a Map to track and manage them
   const slideshows = new Map();
 
+  /**
+   * Initialize all slideshows on the page
+   * Uses a timeout to ensure ApostropheCMS has completed its DOM modifications
+   */
   function initSlideshows() {
     // Clean up existing instances
-    slideshows.forEach(slideshow => slideshow.destroy());
+    slideshows.forEach((slideshow) => slideshow.destroy());
     slideshows.clear();
 
-    // Initialize new instances with a slight delay to allow for apos widget wrapping
+    // Initialize new instances with a delay for ApostropheCMS wrapper setup
     setTimeout(() => {
-      document.querySelectorAll('.slideshow-container').forEach(container => {
-        console.log('container', container);
+      document.querySelectorAll('.slideshow-container').forEach((container) => {
         const slideshowId = container.dataset.slideshowId;
-        if (slideshowId && !apos.isEditing) {
+        if (slideshowId) {
           slideshows.set(slideshowId, new Slideshow(container));
         }
       });
     }, 500);
   }
 
-  // Initialize on page load
+  // Initialize slideshows when the DOM is ready
   document.addEventListener('DOMContentLoaded', initSlideshows);
 
-  // Handle ApostropheCMS refreshes
+  // Handle ApostropheCMS refreshes and modal updates
   if (window.apos) {
+    // Reinitialize on general content refresh
     apos.bus.$on('refreshed', initSlideshows);
+
+    // Reinitialize when modal editing is complete
+    apos.bus.$on('modal-resolved', initSlideshows);
   }
-</script>
+  </script>
