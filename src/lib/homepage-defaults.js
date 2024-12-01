@@ -1,3 +1,5 @@
+import { text } from "@fortawesome/fontawesome-svg-core";
+
 export const heroDefaults = {
   layout: 'split',
   splitSide: 'right',
@@ -20,9 +22,11 @@ export const slideshowDefaults = {
   slides: [
     {
       slideTitle: 'Welcome to Our Site',
-      titleColor: 'white',
+      titleColor: 'warning',
       cardContent: 'Edit this slideshow to add your own content and images.',
-      contentColor: 'white',
+      contentColor: 'success',
+      textBlockBackground: 'dark',
+      textBlockOpacity: '65',
       _image: [
         {
           attachment: {
@@ -36,9 +40,11 @@ export const slideshowDefaults = {
     },
     {
       slideTitle: 'Customizable Design',
-      titleColor: 'white',
+      titleColor: 'primary',
       cardContent: 'Add your own slides with content.',
-      contentColor: 'white',
+      contentColor: 'warning',
+      textBlockBackground: 'dark',
+      textBlockOpacity: '65',
       _image: [
         {
           attachment: {
@@ -52,9 +58,11 @@ export const slideshowDefaults = {
     },
     {
       slideTitle: 'Getting Started',
-      titleColor: 'white',
+      titleColor: 'info',
       cardContent: 'Click edit to begin customizing your slideshow.',
       contentColor: 'white',
+      textBlockBackground: 'dark',
+      textBlockOpacity: '65',
       _image: [
         {
           attachment: {
