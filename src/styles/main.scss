@@ -1,18 +1,6 @@
 @charset "utf-8";
-@use '../themes/themes.scss';
-@use 'bulma/sass/utilities';
-@use 'bulma/sass/base';
-@use 'bulma/sass/elements';
-@use 'bulma/sass/form';
-@use 'bulma/sass/components';
-@use 'bulma/sass/grid';
-@use 'bulma/sass/helpers';
-@use 'bulma/sass/layout';
-@use 'bulma/css/bulma.css';
+@use 'bulma/bulma.scss';
 
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Instrument+Sans:wght@400;500;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Source+Sans+Pro:wght@400;600&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Bitter:wght@400;500;700&family=Commissioner:wght@400;500;600&display=swap');
 
 :root {
   // Your custom CSS variables

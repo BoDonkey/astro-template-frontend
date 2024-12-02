@@ -1,7 +1,0 @@
-@use "../theme-engine";
-
-$default-theme: theme-engine.register-bulma-theme(
-  "default",
-  (),
-  ()
-);

@@ -1,6 +1,5 @@
 ---
 import { useSiteConfig } from '../lib/use-site-config.js';
-import NavbarThemeSwitcher from './NavbarThemeSwitcher.astro';
 
 const { aposData } = Astro.props;
 const mainNav = aposData.home?._children || [];
@@ -38,8 +37,6 @@ const navMenuClasses = () => {
   return classes.join(' ');
 };
 
-const { showThemeSwitcher = false } = headerGroup;
-
 const addFixedHeaderClass = () => {
   const fixedHeader = headerGroup.headerPosition === 'static' ? false : true;
   return fixedHeader.toString();
@@ -54,11 +51,6 @@ const shouldShowItems = navItems.length > 0;
   <div class='container'>
     <div class='navbar-brand'>
       <a href='/' class='navbar-item' set:html={renderBranding()} />
-      {showThemeSwitcher && (
-        <div class='theme-switcher-mobile is-hidden-desktop'>
-          <NavbarThemeSwitcher iconColor={headerGroup.switcherIconColor}/>
-        </div>
-      )}
       { shouldShowItems && (
         <a
           role='button'
@@ -113,17 +105,11 @@ const shouldShowItems = navItems.length > 0;
           </div>
         </div>
       )}
-      {showThemeSwitcher && (
-        <div class='theme-switcher-desktop is-hidden-touch'>
-          <NavbarThemeSwitcher iconColor={headerGroup.switcherIconColor}/>
-        </div>
-      )}
     </div>
   </div>
   <div
     id='theme-marker'
     data-selected-theme={theme.theme}
-    data-selected-mode={theme.mode}
     data-fixed-nav={addFixedHeaderClass()}
     style='display: none;'
   >
@@ -141,14 +127,6 @@ const shouldShowItems = navItems.length > 0;
     display: flex;
     align-items: center;
     margin-left: auto;
-  }
-
-  .theme-switcher-mobile {
-    margin-left: auto;
-  }
-
-  .theme-switcher-desktop {
-    margin-left: 1rem;
   }
 
   .navbar-burger {
