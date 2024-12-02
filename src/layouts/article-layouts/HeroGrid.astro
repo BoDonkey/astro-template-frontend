@@ -1,11 +1,16 @@
 ---
 import AposArea from '@apostrophecms/apostrophe-astro/components/AposArea.astro';
 
+import ArticlesFilter from '../../components/ArticlesFilter.astro';
+
 const {
   pieces,
   gridColumns = 3,
   heroImageClass = 'is-3by2'
 } = Astro.props;
+
+// Get the current category from URL params
+const currentCategory = Astro.url.searchParams.get('category') || '';
 ---
 {pieces[0] && (
   <div class='columns is-vcentered mb-6'>
@@ -56,6 +61,13 @@ const {
       </a>
     </div>
   </div>
+  <div class="container">
+    <ArticlesFilter
+      currentUrl={Astro.url}
+      currentCategory={currentCategory}
+      articles={pieces}
+    />
+  </div>
   <div class='columns is-multiline'>
     {pieces.slice(1).map((article) => (
       <div class={`column is-${12/gridColumns}`}>
@@ -85,7 +97,7 @@ const {
             <p class='content'>{article.excerpt}</p>
           </div>
           <footer class='card-footer mt-auto'>
-            <a href={article._url} class='card-footer-item'>
+            <a href={article._url} class='card-footer-item button is-info is-medium'>
               Read More
             </a>
           </footer>
@@ -94,3 +106,11 @@ const {
     ))}
   </div>
 )}
+
+<style>
+html.theme-dark .title,
+html.theme-dark .subtitle {
+  color: #fff !important;
+}
+
+</style>

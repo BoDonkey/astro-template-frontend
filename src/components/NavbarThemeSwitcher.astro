@@ -14,15 +14,35 @@ class ThemeSwitcher {
   constructor() {
     this.htmlElement = document.documentElement;
     this.init();
+    this.setupSystemPreferenceListener();
   }
 
   init() {
-    // Initialize all theme switcher buttons
+    // Check system preference on initial load
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    // If no theme is set yet, use system preference
+    if (!this.htmlElement.classList.contains('theme-dark') && 
+        !this.htmlElement.classList.contains('theme-light')) {
+      this.setTheme(prefersDark);
+    }
+
     const buttons = document.querySelectorAll('.theme-switcher');
     buttons.forEach(button => {
       this.setupButton(button);
       this.updateIcon(button.querySelector('i'), this.isDarkTheme());
     });
+  }
+
+  setupSystemPreferenceListener() {
+    // Listen for system theme changes
+    window.matchMedia('(prefers-color-scheme: dark)')
+      .addEventListener('change', (e) => {
+        this.setTheme(e.matches);
+        document.querySelectorAll('.theme-switcher i').forEach(icon => {
+          this.updateIcon(icon, e.matches);
+        });
+      });
   }
 
   setupButton(button) {
@@ -33,7 +53,6 @@ class ThemeSwitcher {
     const isDark = this.isDarkTheme();
     this.setTheme(!isDark);
     
-    // Update all icons when theme changes
     document.querySelectorAll('.theme-switcher i').forEach(icon => {
       this.updateIcon(icon, !isDark);
     });
@@ -46,6 +65,9 @@ class ThemeSwitcher {
   setTheme(isDark) {
     this.htmlElement.classList.remove(`theme-${isDark ? 'light' : 'dark'}`);
     this.htmlElement.classList.add(`theme-${isDark ? 'dark' : 'light'}`);
+    
+    // Optionally save preference to localStorage
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
   }
 
   updateIcon(icon, isDark) {

@@ -4,6 +4,10 @@ import AposArea from '@apostrophecms/apostrophe-astro/components/AposArea.astro'
 
 // Column layout configurations
 const layouts = {
+  'single': {
+    classes: ['is-12'],
+    areas: ['columnOneContent']
+  },
   'two-equal': {
     classes: ['is-6', 'is-6'],
     areas: ['columnOneContent', 'columnTwoContent']

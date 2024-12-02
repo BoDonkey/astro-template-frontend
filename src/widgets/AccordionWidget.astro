@@ -6,17 +6,19 @@ const {
   itemBackgroundColor = 'white',
   headerAlignment = 'left',
   allowMultipleOpen = false,
-  defaultOpenIndex = -1,
+  openIndex = -1,
   items = []
 } = widget;
----
 
+const convertedIndex = openIndex === -1 ? -1 : openIndex - 1;
+---
+<!-- Only add the data attribute if allowMultipleOpen is true -->
 <div class='accordion-widget' data-allow-multiple={allowMultipleOpen}>
   {
     items.map((item, index) => (
       <details
         class={`accordion has-background-${itemBackgroundColor}`}
-        open={index === defaultOpenIndex}
+        open={index === convertedIndex}
       >
         <summary class={`accordion-header has-text-${headerAlignment}`}>
           <p class={`has-text-${item.headerColor} has-text-weight-semibold`}>
@@ -62,7 +64,6 @@ const {
     border-top: 1px solid #dbdbdb;
   }
 
-  /* Header alignment styles */
   .accordion-header.has-text-center {
     justify-content: center;
   }
@@ -77,42 +78,33 @@ function initializeAccordion() {
   const accordionContainers = document.querySelectorAll('.accordion-widget');
 
   accordionContainers.forEach((accordionContainer) => {
-    const allowMultipleOpen = accordionContainer.dataset.allowMultiple === 'true';
-    const detailsElements = accordionContainer.querySelectorAll('details');
+    const allowMultipleOpen = accordionContainer.hasAttribute('data-allow-multiple');
+    const detailsElements = Array.from(accordionContainer.querySelectorAll('details'));
 
     detailsElements.forEach((detailsElement) => {
-      const summaryElement = detailsElement.querySelector('summary');
-
-      summaryElement.addEventListener('click', (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-
-        const wasOpen = detailsElement.open;
-
-        if (!allowMultipleOpen) {
-          detailsElements.forEach((otherDetailsElement) => {
-            if (otherDetailsElement !== detailsElement) {
-              otherDetailsElement.open = false;
-            }
-          });
+      detailsElement.addEventListener('toggle', () => {
+        // Only close other panels if allowMultipleOpen is false
+        if (detailsElement.open && !allowMultipleOpen) {
+          detailsElements
+            .filter(details => details !== detailsElement)
+            .forEach(details => {
+              details.open = false;
+            });
         }
-
-        // Force a reflow
-        void detailsElement.offsetHeight;
-        detailsElement.open = !wasOpen;
       });
     });
   });
 }
 
+// Initialize on DOM content loaded
 document.addEventListener('DOMContentLoaded', initializeAccordion);
 
+// Handle dynamically added accordions
 const observer = new MutationObserver((mutations) => {
-  const hasRelevantChanges = mutations.some(mutation => 
-    Array.from(mutation.addedNodes).some(node => 
+  const hasRelevantChanges = mutations.some(mutation =>
+    Array.from(mutation.addedNodes).some(node =>
       node.nodeType === 1 && 
-      (node.classList?.contains('accordion-widget') |
-      node.querySelector?.('.accordion-widget'))
+      (node.classList?.contains('accordion-widget') || node.querySelector?.('.accordion-widget'))
     )
   );
 
