@@ -1,6 +1,8 @@
 ---
 import AposArea from '@apostrophecms/apostrophe-astro/components/AposArea.astro';
 
+import ArticlesFilter from '../../components/ArticlesFilter.astro';
+
 const {
   pieces,
   showImage = true,
@@ -8,16 +10,23 @@ const {
   showAuthorAvatar = true,
   excerptLength
 } = Astro.props;
-
 const textWidth = showImage ? 12 - imageWidth : 12;
----
 
+// Get the current category from URL params
+const currentCategory = Astro.url.searchParams.get('category') || '';
+---
+<div class="container">
+  <ArticlesFilter
+    currentUrl={Astro.url}
+    currentCategory={currentCategory}
+    articles={pieces}
+  />
 <div class='content'>
   {pieces.map((article) => (
     <article class='mb-6 pb-6 border-bottom'>
       <div class='columns is-vcentered'>
         <div class={`column is-${textWidth}`}>
-          <a href={article._url} class='has-text-dark'>
+          <a href={article._url}>
             <h2 class='title is-3'>{article.title}</h2>
           </a>
           <div class='author-info mb-3'>
@@ -74,6 +83,14 @@ const textWidth = showImage ? 12 - imageWidth : 12;
   ))}
 </div>
 <style>
+  html.theme-dark .title {
+    color: #fff !important;
+  }
+  
+  html.theme-dark .subtitle,
+  html.theme-dark p {
+    color: #dbdbdb !important;
+  }
   /* Add these styles to fix image fitting */
   .image img {
     object-fit: cover;

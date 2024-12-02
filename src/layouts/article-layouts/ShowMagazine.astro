@@ -44,7 +44,21 @@ const { article } = Astro.props;
   </div>
 </article>
 <style>
-  /* Add these styles to fix image fitting */
+  .magazine-article {
+  --text-primary: #363636;
+  --text-secondary: #4a4a4a;
+}
+
+html.theme-dark .magazine-article {
+  --text-primary: #fff;
+  --text-secondary: #eaeaea;
+}
+
+.magazine-article .title,
+.magazine-article .subtitle {
+  color: var(--text-primary);
+}
+  /* Fix image fitting */
   .image img {
     object-fit: cover;
     width: 100%;

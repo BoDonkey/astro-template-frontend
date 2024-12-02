@@ -3,7 +3,17 @@ import AposArea from '@apostrophecms/apostrophe-astro/components/AposArea.astro'
 
 const { article } = Astro.props;
 ---
-
+{article._heroImage?.[0] && (
+  <div class="container is-max-desktop mb-6">
+    <figure class="image is-3by2">
+      <img
+        src={article._heroImage[0].attachment._urls.full}
+        alt={article._heroImage[0].attachment.alt || ''}
+        class="object-fit-cover"
+      />
+    </figure>
+  </div>
+)}
 <article class="minimal-article">
   <div class="section">
     <div class="container is-max-desktop">
@@ -49,7 +59,16 @@ const { article } = Astro.props;
   </div>
 </article>
 <style>
-  /* Add these styles to fix image fitting */
+  html.theme-dark .minimal-article {
+  --text-primary: #fff;
+  --text-secondary: #eaeaea;
+}
+
+.minimal-article .title,
+.minimal-article .subtitle {
+  color: var(--text-primary);
+}
+  /* Fix image fitting */
   .image img {
     object-fit: cover;
     width: 100%;
@@ -60,7 +79,4 @@ const { article } = Astro.props;
     border-radius: 50%;
   }
 
-  .has-shadow {
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  }
 </style>

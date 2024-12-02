@@ -8,7 +8,6 @@ $themes: () !default;
 
 // Base configuration
 $theme-base: (
-  "scheme-brightness": "light",
   "scheme-main": hsl(iv.$scheme-h, iv.$scheme-s, 100%),
   "scheme-main-l": 100%,
   "background-l": 96%,

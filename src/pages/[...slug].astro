@@ -91,7 +91,13 @@ import Footer from '../components/Footer.astro';
         }
       });
     </script>
-    
+
+    <script is:inline>
+      // Try to get saved theme or fallback to system preference
+      const theme = localStorage.getItem('theme') || 
+        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.classList.add(`theme-${theme}`);
+    </script>
   </Fragment>
 
   <Header slot='beforeMain' {aposData} />

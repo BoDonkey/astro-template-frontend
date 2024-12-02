@@ -1,6 +1,9 @@
 ---
 import AposArea from '@apostrophecms/apostrophe-astro/components/AposArea.astro';
 
+import ArticlesFilter from '../../components/ArticlesFilter.astro';
+
+
 const {
   pieces,
   showRelated = true,
@@ -10,6 +13,9 @@ const {
 } = Astro.props;
 
 const mainWidth = 12 - sidebarWidth;
+
+// Get the current category from URL params
+const currentCategory = Astro.url.searchParams.get('category') || '';
 ---
 
 <div class='columns'>
@@ -19,7 +25,7 @@ const mainWidth = 12 - sidebarWidth;
         <div class='columns is-vcentered'>
           <div class='column is-7'>
             <h2 class='title is-3 mb-4'>
-              <a href={article._url} class='has-text-dark'>
+              <a href={article._url}>
                 {article.title}
               </a>
             </h2>
@@ -38,8 +44,8 @@ const mainWidth = 12 - sidebarWidth;
                     </figure>
                   </div>
                 )}
-                <div class='media-content'>
-                  <p class='has-text-grey'>
+                <div class='author-content'>
+                  <p>
                     By <strong>{article._author[0].title} </strong> |
                     {new Date(article.publishDate).toLocaleDateString()}
                   </p>
@@ -86,6 +92,14 @@ const mainWidth = 12 - sidebarWidth;
     ))}
   </div>
   <div class={`column is-${sidebarWidth}`}>
+    <div class="box sticky-top mb-6">
+      <ArticlesFilter
+        darkTheme=false
+        currentUrl={Astro.url}
+        currentCategory={currentCategory}
+        articles={pieces}
+      />
+    </div>
     {/* Optional sidebar area content */}
     {sidebarArea && (
       <div class='box sticky-top mb-6'>
@@ -112,6 +126,15 @@ const mainWidth = 12 - sidebarWidth;
   </div>
 </div>
 <style>
+  <style>
+  html.theme-dark .title
+   {
+    color: #fff !important;
+  }
+
+  html.theme-dark .author-content strong {
+    color: #000 !important;
+  }
   .image img {
     object-fit: cover;
     width: 100%;
